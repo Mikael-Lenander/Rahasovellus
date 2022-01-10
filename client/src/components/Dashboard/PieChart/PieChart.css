@@ -1,0 +1,17 @@
+.monthly-income-graph {
+    grid-area: monthly-income-graph;
+  }
+  
+  .monthly-expense-graph {
+    grid-area: monthly-expense-graph;
+  }
+
+  .slice-income:hover, .slice-expense:hover {
+    transform: scale(1.05);
+  }
+
+  .title {
+    text-anchor: middle;
+    font-size: '25px';
+    font-family: 'Roboto';
+  }

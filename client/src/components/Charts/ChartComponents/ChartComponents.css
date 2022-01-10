@@ -1,0 +1,15 @@
+#positive-networth-area {
+    fill: #29852f;
+}
+
+#negative-networth-area {
+    fill: #a64641;
+}
+
+.networth-point {
+    fill: #29852f
+}
+
+.y-axis-label {
+    font-family: Arial;
+}

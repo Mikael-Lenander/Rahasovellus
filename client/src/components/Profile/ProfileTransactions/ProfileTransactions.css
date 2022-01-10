@@ -1,0 +1,39 @@
+.profile-transactions {
+    padding-top: 0.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.transaction-search-table {
+    overflow-y: auto;
+    min-height: 300px;
+    padding-top: 10px;
+}
+
+.search-form {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.search-form-item {
+    margin: 0px 5px 0px 5px;
+}
+
+@media screen and (max-width: 700px) {
+    .search-form {
+        grid-template-columns: repeat(auto-fit, 100%);
+
+    }
+
+    .search-form-item {
+        margin: 0;
+    }
+
+    .transaction-search-table {
+        overflow-y: initial;
+        height: auto;
+        overflow-x: auto;
+    }
+}

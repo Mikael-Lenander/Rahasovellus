@@ -1,0 +1,27 @@
+.net-worth {
+    grid-area: net-worth;
+    font-family: 'Roboto';
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  
+  .net-worth h2 {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  .net-worth h1 {
+    font-size: 45px;
+    margin: 0;
+  }
+
+  .net-worth hr {
+    margin: -8px 10px 5px 0px;
+    background: black;
+  }
+
+  .net-worth p {
+    margin: 0;
+  }

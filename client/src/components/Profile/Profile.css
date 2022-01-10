@@ -1,0 +1,43 @@
+.profile-grid {
+    background-color: white;
+    height: 90vh;
+    margin-top: 10vh;
+    padding: 5px 10px 5px 10px;
+    display: grid;
+    justify-items: stretch;
+    align-items: stretch;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    /* grid-template-rows: 1fr 1fr; */
+}
+
+.profile-section {
+    min-height: 86vh;
+    background-color: white;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.55);
+    font-size: 16px;
+}
+
+.title {
+    margin-left: 0.3em;
+    margin-bottom: 0;
+    font-family: 'Roboto', 'Arial';
+}
+
+@media screen and (max-width: 700px) {
+    .profile-section {
+        width: 95vw;
+        box-shadow: none;
+        height: initial;
+        overflow-x: hidden;
+        padding: 0;
+    }
+    .profile-grid {
+        height: initial;
+        margin-top: 65px;
+    }
+
+    .title {
+        margin-left: 0;
+    }
+}

@@ -1,0 +1,31 @@
+.transaction-table {
+    grid-area: transaction-table;
+    overflow-y: auto;
+  }
+
+  .delete-button {
+    color: black;
+    font-size: 20px;
+  }
+  
+  .table {
+    font-family: 'Arial';
+  }
+  
+  .table th {
+    background-color: #2e20ec;
+    color: white;
+    font-family: 'Arial', 'sans-serif';
+  }
+  
+  .table tr:nth-child(odd) {
+    background-color: #f2f2f2;
+  } 
+  
+  .table tr:hover {
+    background: #e4e4f8 !important;
+  }
+  
+  .table td {
+    vertical-align: middle !important;
+  }
