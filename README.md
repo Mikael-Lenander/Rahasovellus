@@ -1,6 +1,6 @@
 # Rahasovellus
 
-Sivu löytyy [täältä](https://rahaseuranta.netlify.app/).
+Sivu löytyy [täältä](https://rahasovellus.herokuapp.com/).
 
 Sivusta ei saa paljon irti ilman kirjautumista. Voit kirjautua käyttäjänimellä demouser ja salasanalla vahvasalasana nähdäksesi sivun esimerkkidatalla varustettuna. Sivu toimii ainakin Chromella ja Firefoxilla, muista selaimista en tiedä.
 
