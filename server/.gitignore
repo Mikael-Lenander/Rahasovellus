@@ -2,3 +2,4 @@ node_modules
 requests.rest
 .env
 data.json
+build

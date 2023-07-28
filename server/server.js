@@ -6,6 +6,7 @@ const session = require('express-session')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
+const path = require('path')
 const passport = require('passport')
 const passportConfig = require('./passportConfig')
 const authRouters = require('./routes/auth')
@@ -25,12 +26,13 @@ db.once('open', function () {
 	console.log('Connected to database successfully')
 })
 
+app.use(express.static('build'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(
 	cors({
-		origin: ['https://rahasovellus.netlify.app', 'http://localhost:3000', 'https://rahaseuranta.netlify.app'],
+		origin: ['https://rahasovellus.herokuapp.com'],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: true,
 	})
@@ -59,13 +61,13 @@ const isAuthenticated = (req, res, next) => {
 	next()
 }
 
-app.get('/', (req, res) => {
-	res.send('rahasovellus')
-})
+app.use('/api', authRouters(passport))
+app.use('/api/transaction', isAuthenticated, transactionRouters)
+app.use('/api/user', isAuthenticated, userRouters)
 
-app.use('/', authRouters(passport))
-app.use('/transaction', isAuthenticated, transactionRouters)
-app.use('/user', isAuthenticated, userRouters)
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname + '/build/index.html'))
+})
 
 app.listen(PORT, () => {
 	console.log(`Server listening on port ${PORT}`)
