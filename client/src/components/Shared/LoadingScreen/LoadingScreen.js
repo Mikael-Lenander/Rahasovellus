@@ -1,14 +1,14 @@
 import React from 'react'
-import { faCircleNotch } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './LoadingScreen.css'
 
-export default function LoadingScreen({classes, ...rest}) {
-    return (
-        <>
-        <main className={classes}>
-            <FontAwesomeIcon icon={faCircleNotch} className='spinner' {...rest}/>
-        </main>
-        </>
-    )
+export default function LoadingScreen({ classes, ...rest }) {
+	return (
+		<>
+			<main className={classes}>
+				<FontAwesomeIcon icon={faCircleNotch} className='spinner' {...rest} />
+			</main>
+		</>
+	)
 }

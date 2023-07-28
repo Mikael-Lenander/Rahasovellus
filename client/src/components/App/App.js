@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'tippy.js/dist/tippy.css'
-import {BrowserRouter, Switch, Route} from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Home from '../Home/Home'
 import Login from '../Login/Login'
 import Register from '../Register/Register'
@@ -18,39 +18,40 @@ import LoadingScreen from '../Shared/LoadingScreen/LoadingScreen'
 import getUser from '../../actions/getUser'
 
 function App() {
+	const dispatch = useDispatch()
+	const fetching = useSelector(state => state.user.fetching)
+	const user = useSelector(state => state.user.data)
+	console.log('user', user)
 
-  const dispatch = useDispatch()
-  const fetching = useSelector(state => state.user.fetching)
-  const user = useSelector(state => state.user.data)
-  console.log('user', user)
+	useEffect(() => {
+		dispatch(getUser())
+	}, [dispatch])
 
-  useEffect(() => {
-    dispatch(getUser())
-  }, [dispatch])
-
-  return (
-    <>
-    {fetching
-      ? <>
-          <Header/>
-          <LoadingScreen classes='flex-center background' size='6x'/>
-        </>
-      :  <>
-      <BrowserRouter>
-        <Switch>
-          <PublicRoute exact path='/' component={Home}/>
-          <PublicRoute exact path='/login' component={Login}/>
-          <PublicRoute exact path='/register' component={Register}/>
-          <PrivateRoute exact path="/dashboard" component={Dashboard}/>
-          <PrivateRoute exact path="/charts" component={Charts}/>
-          <PrivateRoute exact path="/profile" component={Profile}/>
-          <Route path="*" component={() => "404 PAGE NOT FOUND"} />
-        </Switch>
-      </BrowserRouter>
-      {/* <Footer/> */}
-      </>
-    }
-  </>)
+	return (
+		<>
+			{fetching ? (
+				<>
+					<Header />
+					<LoadingScreen classes='flex-center background' size='6x' />
+				</>
+			) : (
+				<>
+					<BrowserRouter>
+						<Switch>
+							<PublicRoute exact path='/' component={Home} />
+							<PublicRoute exact path='/login' component={Login} />
+							<PublicRoute exact path='/register' component={Register} />
+							<PrivateRoute exact path='/dashboard' component={Dashboard} />
+							<PrivateRoute exact path='/charts' component={Charts} />
+							<PrivateRoute exact path='/profile' component={Profile} />
+							<Route path='*' component={() => '404 PAGE NOT FOUND'} />
+						</Switch>
+					</BrowserRouter>
+					{/* <Footer/> */}
+				</>
+			)}
+		</>
+	)
 }
 
-export default App;
+export default App

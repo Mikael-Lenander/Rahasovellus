@@ -1,78 +1,88 @@
 const dayjs = require('dayjs')
 
 class datasetGenerator {
+	constructor(data, initCapital = 0, categories = []) {
+		this.data = data
+		this.initCapital = initCapital
+		this.categories = categories
+	}
 
-    constructor(data, initCapital=0, categories=[]) {
-        this.data = data
-        this.initCapital = initCapital
-        this.categories = categories
-    }
+	initCapitalAt(date) {
+		return this.data
+			.filter(transaction => new Date(transaction.date) < new Date(date))
+			.reduce((sum, transaction) => {
+				const multiplier = transaction.type == 'income' ? 1 : -1
+				return sum + multiplier * transaction.amount
+			}, this.initCapital)
+	}
 
-    initCapitalAt(date) {
-        return this.data
-        .filter(transaction => new Date(transaction.date) < new Date(date))
-        .reduce((sum, transaction) => {
-            const multiplier = transaction.type == 'income' ? 1 : -1
-            return sum + multiplier * transaction.amount
-        }, this.initCapital)
-    }
+	netWorth(startDate) {
+		const initCapital = this.initCapitalAt(startDate)
+		return this.data
+			.filter(transaction => new Date(transaction.date) >= new Date(startDate))
+			.reduce(
+				(arr, transaction) => {
+					const multiplier = transaction.type === 'income' ? 1 : -1
+					const currentDate = dayjs(transaction.date)
+					const lastDate = dayjs(arr[arr.length - 1].date)
+					if (currentDate.isSame(lastDate, 'day')) {
+						arr[arr.length - 1].capital += multiplier * transaction.amount
+						return arr
+					}
+					arr.push({
+						date: new Date(transaction.date),
+						capital: arr[arr.length - 1].capital + multiplier * transaction.amount,
+					})
+					return arr
+				},
+				[
+					{
+						date: new Date(startDate),
+						capital: initCapital,
+					},
+				]
+			)
+	}
 
-    netWorth(startDate) {
-        const initCapital = this.initCapitalAt(startDate)
-        return this.data
-        .filter(transaction => new Date(transaction.date) >= new Date(startDate))
-        .reduce((arr, transaction) => {
-            const multiplier = transaction.type === 'income' ? 1 : -1
-            const currentDate = dayjs(transaction.date)
-            const lastDate = dayjs(arr[arr.length - 1].date)
-            if (currentDate.isSame(lastDate, 'day')) {
-                arr[arr.length - 1].capital += multiplier * transaction.amount
-                return arr
-            }
-            arr.push({
-                date: new Date(transaction.date),
-                capital: arr[arr.length - 1].capital + multiplier * transaction.amount
-            })
-            return arr
-        }, [{
-            date: new Date(startDate),
-            capital: initCapital
-        }])
-    }
+	distributionAt(date) {
+		const initObj = this.categories.reduce((obj, category) => {
+			obj[category] = 0
+			return obj
+		}, {})
+		return this.data
+			.filter(transaction => new Date(transaction.date) < new Date(date))
+			.reduce(
+				(obj, transaction) => {
+					obj[transaction.category] += transaction.amount
+					return obj
+				},
+				{ date: new Date(date), ...initObj }
+			)
+	}
 
-    distributionAt(date) {
-        const initObj = this.categories.reduce((obj, category) => {
-            obj[category] = 0
-            return obj
-        }, {})
-        return this.data
-        .filter(transaction => new Date(transaction.date) < new Date(date))
-        .reduce((obj, transaction) => {
-            obj[transaction.category] += transaction.amount
-            return obj
-        }, {date: new Date(date), ...initObj})
-    }
-
-    distribution(startDate) {
-        const initDistribution = this.distributionAt(startDate)
-        return this.data
-        .filter(transaction => new Date(transaction.date) >= new Date(startDate))
-        .reduce((arr, transaction) => {
-            const currentDate = dayjs(transaction.date)
-            const lastDate = dayjs(arr[arr.length - 1].date)
-            if (currentDate.isSame(lastDate, 'day')) {
-                arr[arr.length - 1][transaction.category] += transaction.amount
-                return arr
-            }
-            const lastObj = Object.assign(arr[arr.length - 1])
-            lastObj[transaction.category] += transaction.amount
-            arr.push({
-                ...lastObj,
-                date: new Date(transaction.date),
-            })
-            return arr
-        }, [initDistribution])
-    }
+	distribution(startDate) {
+		const initDistribution = this.distributionAt(startDate)
+		return this.data
+			.filter(transaction => new Date(transaction.date) >= new Date(startDate))
+			.reduce(
+				(arr, transaction) => {
+					const currentDate = dayjs(transaction.date)
+					const lastDate = dayjs(arr[arr.length - 1].date)
+					if (currentDate.isSame(lastDate, 'day')) {
+						arr[arr.length - 1][transaction.category] += transaction.amount
+						return arr
+					}
+					const lastObj = Object.assign(arr[arr.length - 1])
+					lastObj[transaction.category] += transaction.amount
+					arr.push({
+						...lastObj,
+						date: new Date(transaction.date),
+					})
+					return arr
+				},
+				[initDistribution]
+			)
+	}
 }
 
 module.exports = datasetGenerator

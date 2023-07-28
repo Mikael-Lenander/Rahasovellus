@@ -1,13 +1,13 @@
 .footer {
-    background: hsl(0, 0%, 10%);
-    height: 20vh;
-    color: white;
-  }
-  
-  #footer-text {
-    float: right;
-    margin-top: 0px;
-    padding-right: 3%;
-    padding-top: 20px;
-    text-align: right;
-  }
+	background: hsl(0, 0%, 10%);
+	height: 20vh;
+	color: white;
+}
+
+#footer-text {
+	float: right;
+	margin-top: 0px;
+	padding-right: 3%;
+	padding-top: 20px;
+	text-align: right;
+}

@@ -4,11 +4,10 @@ import ProfileCategories from './ProfileCategories/ProfileCategories'
 import './ProfileInfo.css'
 
 export default function ProfileInfo() {
-
-    return (
-        <section className='profile-section profile-info'>
-            <ProfileSettings/>
-            <ProfileCategories/>
-        </section>
-    )
+	return (
+		<section className='profile-section profile-info'>
+			<ProfileSettings />
+			<ProfileCategories />
+		</section>
+	)
 }

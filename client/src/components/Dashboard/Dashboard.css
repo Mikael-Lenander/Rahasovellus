@@ -1,43 +1,43 @@
 .dashboard-grid {
-    background-color: white;
-    height: 90vh;
-    margin-top: 10vh;
-    padding: 5px 10px 5px 10px;
-    display: grid;
-    justify-items: stretch;
-    align-items: stretch;
-    grid-gap: 10px;
-    grid-template-columns: 5fr 5fr 4fr 6fr;
-    grid-template-rows: repeat(4, 1fr);
-    grid-template-areas: 
-      "net-worth balance-graph balance-graph monthly-income-graph"
-      "transaction-form balance-graph balance-graph monthly-income-graph"
-      "transaction-form transaction-table transaction-table monthly-expense-graph"
-      "transaction-form transaction-table transaction-table monthly-expense-graph";
-  }
-  
-  .dashboard-item {
-    background-color: white;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.55);
-  }
+	background-color: white;
+	height: 90vh;
+	margin-top: 10vh;
+	padding: 5px 10px 5px 10px;
+	display: grid;
+	justify-items: stretch;
+	align-items: stretch;
+	grid-gap: 10px;
+	grid-template-columns: 5fr 5fr 4fr 6fr;
+	grid-template-rows: repeat(4, 1fr);
+	grid-template-areas:
+		'net-worth balance-graph balance-graph monthly-income-graph'
+		'transaction-form balance-graph balance-graph monthly-income-graph'
+		'transaction-form transaction-table transaction-table monthly-expense-graph'
+		'transaction-form transaction-table transaction-table monthly-expense-graph';
+}
+
+.dashboard-item {
+	background-color: white;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.55);
+}
 
 @media screen and (max-width: 700px) {
-  .dashboard-grid {
-    margin-top: 70px;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(12, 28vh);
-    grid-template-areas: 
-    "net-worth"
-    "transaction-form"
-    "transaction-form"
-    "transaction-form"
-    "transaction-table"
-    "transaction-table"
-    "balance-graph"
-    "balance-graph"
-    "monthly-income-graph"
-    "monthly-income-graph"
-    "monthly-expense-graph"
-    "monthly-expense-graph";
-  }
+	.dashboard-grid {
+		margin-top: 70px;
+		grid-template-columns: 1fr;
+		grid-template-rows: repeat(12, 28vh);
+		grid-template-areas:
+			'net-worth'
+			'transaction-form'
+			'transaction-form'
+			'transaction-form'
+			'transaction-table'
+			'transaction-table'
+			'balance-graph'
+			'balance-graph'
+			'monthly-income-graph'
+			'monthly-income-graph'
+			'monthly-expense-graph'
+			'monthly-expense-graph';
+	}
 }

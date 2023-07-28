@@ -1,50 +1,50 @@
 .header {
-    background: linear-gradient(180deg, rgba(8,3,91,1) 0%, rgba(8,8,134,1) 50%);
-    height: 10vh;
-    color: white;
-    font-family: 'Roboto', sans-serif;
-    opacity: 0.95;
-    padding: 5px;
-  }
-  
-  .flex-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logo {
-    font-family: 'Roboto', sans-serif;
-    color: white;
-    font-size: 33px;
-    margin: 0;
-  }
-  
-  .hidden-link {
-    text-decoration: none;
-    cursor: pointer;
-    color: white;
-  }
-  
-  .hidden-link:hover {
-    color: white;
-    text-decoration: none;
-  }
-  
-  .navbar button {
-    margin-left: 7px;
-    margin-right: 7px;
-    font-size: 20px;
-    font-family: 'Arial', 'sans-serif';
-  }
+	background: linear-gradient(180deg, rgba(8, 3, 91, 1) 0%, rgba(8, 8, 134, 1) 50%);
+	height: 10vh;
+	color: white;
+	font-family: 'Roboto', sans-serif;
+	opacity: 0.95;
+	padding: 5px;
+}
 
-  .links {
-    display: flex;
-    justify-content: flex-end;
-  }
+.flex-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.logo {
+	font-family: 'Roboto', sans-serif;
+	color: white;
+	font-size: 33px;
+	margin: 0;
+}
+
+.hidden-link {
+	text-decoration: none;
+	cursor: pointer;
+	color: white;
+}
+
+.hidden-link:hover {
+	color: white;
+	text-decoration: none;
+}
+
+.navbar button {
+	margin-left: 7px;
+	margin-right: 7px;
+	font-size: 20px;
+	font-family: 'Arial', 'sans-serif';
+}
+
+.links {
+	display: flex;
+	justify-content: flex-end;
+}
 
 @media screen and (max-width: 700px) {
-  .header {
-    height: initial;
-  }
+	.header {
+		height: initial;
+	}
 }

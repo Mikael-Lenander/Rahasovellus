@@ -1,13 +1,13 @@
 .balance-graph {
-    grid-area: balance-graph;
-  }
+	grid-area: balance-graph;
+}
 
 rect:hover {
-    stroke: black;
-  }
+	stroke: black;
+}
 
 .title {
-  text-anchor: middle;
-  font-size: 30px;
-  font-family: 'Roboto';
+	text-anchor: middle;
+	font-size: 30px;
+	font-family: 'Roboto';
 }
