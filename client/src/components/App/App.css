@@ -48,6 +48,11 @@
   margin-top: 20px;
 }
 
+#bootstrap-overrides .form-submit {
+  background: rgba(8,8,180,1);
+  color: white;
+}
+
 .tippy-content {
   font-family: Arial;
   background: black;
