@@ -1,33 +1,35 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import Header from '../Shared/Header/Header'
 import DatePicker from 'react-datepicker'
 import NetWorthChart from './ChartComponents/NetWorthChart/NetWorthChart'
-import DistributionChart from './ChartComponents/DistributionChart/DistributionChart'
 import LoadingScreen from '../Shared/LoadingScreen/LoadingScreen'
-import getChartData from '../../actions/getChartData'
+import TransactionCalculator from '../../utils/TransactionCalculator'
 import dayjs from 'dayjs'
 import './Charts.css'
 
-export default function Charts() {
-	const oldestTransactionDate = useSelector(state => state.user.data.oldestTransactionDate)
-	const dataset = useSelector(state => state.chartData.data)
-	const dispatch = useDispatch()
-	const [chart, setChart] = useState('net-worth')
-	const [startDate, setStartDate] = useState(new Date(oldestTransactionDate))
-	const [endDate, setEndDate] = useState()
-	const [svgHeight, setSvgHeight] = useState(450)
+const CHARTS = {
+	NET_WORTH: 'Net worth',
+}
 
-	function drawChart(chart, dataset) {
+export default function Charts() {
+	const transactions = useSelector(state => state.transactions.data)
+	const oldestTransactionDate = useSelector(state => state.user.data.oldestTransactionDate)
+	const [chart, setChart] = useState(CHARTS.NET_WORTH)
+	const [startDate, setStartDate] = useState(new Date(oldestTransactionDate))
+	const [endDate, setEndDate] = useState(new Date())
+	const [svgHeight, setSvgHeight] = useState(450)
+	const datasetGenerator = new TransactionCalculator(transactions)
+
+	function drawChart(chart) {
+		const startDateString = startDate ? dayjs(startDate).format('YYYY/M/D') : dayjs(oldestTransactionDate).format('YYYY/M/D')
+		const endDateString = endDate ? dayjs(endDate).format('YYYY/M/D') : dayjs(100000000000000).format('YYYY/M/D')
 		switch (chart) {
-			case 'net-worth':
+			case CHARTS.NET_WORTH:
+				const dataset = datasetGenerator.netWorths(startDateString, endDateString)
 				return <NetWorthChart dataset={dataset} onSetSvgHeight={onSetSvgHeight} />
-			case 'income-distribution':
-				return <DistributionChart dataset={dataset} onSetSvgHeight={onSetSvgHeight} type='income' />
-			case 'expense-distribution':
-				return <DistributionChart dataset={dataset} onSetSvgHeight={onSetSvgHeight} type='expense' />
 			default:
-				return
+				throw new Error('Invalid chart type')
 		}
 	}
 
@@ -39,13 +41,7 @@ export default function Charts() {
 		}
 	}
 
-	useEffect(() => {
-		const startDateString = startDate ? dayjs(startDate).format('YYYY/M/D') : dayjs(oldestTransactionDate).format('YYYY/M/D')
-		const endDateString = endDate ? dayjs(endDate).format('YYYY/M/D') : dayjs(100000000000000).format('YYYY/M/D')
-		dispatch(getChartData(startDateString, endDateString, chart))
-	}, [dispatch, chart, startDate, endDate, oldestTransactionDate])
-
-	const fetching = useSelector(state => state.chartData.fetching)
+	const fetching = useSelector(state => state.transactions.fetching)
 
 	return (
 		<>
@@ -84,9 +80,11 @@ export default function Charts() {
 							Chart
 						</label>
 						<select className='form-control text-input' value={chart} onChange={e => setChart(e.target.value)}>
-							<option value='net-worth'>Net worth</option>
-							<option value='income-distribution'>Income distribution</option>
-							<option value='expense-distribution'>Expense distribution</option>
+							{Object.values(CHARTS).map(chart => (
+								<option key={chart} value={chart}>
+									{chart}
+								</option>
+							))}
 						</select>
 					</div>
 				</form>
@@ -94,7 +92,7 @@ export default function Charts() {
 					<LoadingScreen style={{ color: 'black', width: 60, height: 60 }} classes='chart flex-center' />
 				) : (
 					<div className='chart' style={{ height: svgHeight }}>
-						{drawChart(chart, dataset)}
+						{drawChart(chart)}
 					</div>
 				)}
 			</main>

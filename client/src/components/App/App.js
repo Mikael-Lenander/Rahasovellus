@@ -16,6 +16,7 @@ import PublicRoute from '../Routes/PublicRoute'
 // import Footer from '../Footer/Footer'
 import LoadingScreen from '../Shared/LoadingScreen/LoadingScreen'
 import getUser from '../../actions/getUser'
+import getTransactions from '../../actions/getTransactions'
 
 function App() {
 	const dispatch = useDispatch()
@@ -25,6 +26,7 @@ function App() {
 
 	useEffect(() => {
 		dispatch(getUser())
+		dispatch(getTransactions())
 	}, [dispatch])
 
 	return (

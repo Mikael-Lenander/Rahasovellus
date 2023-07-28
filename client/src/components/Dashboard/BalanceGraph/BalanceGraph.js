@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import LoadingScreen from '../../Shared/LoadingScreen/LoadingScreen'
 import { useSelector } from 'react-redux'
 import * as d3 from 'd3'
-import transactionCalculator from '../../../utils/transactionCalculator'
+import TransactionCalculator from '../../../utils/TransactionCalculator'
 import tippy from 'tippy.js'
 import dayjs from 'dayjs'
 import useResizeObserver from '../../../hooks/useResizeObserver'
@@ -13,8 +13,8 @@ export default function BalanceGraph() {
 	const svgRef = useRef()
 	const containerRef = useRef(null)
 	const dimensions = useResizeObserver(containerRef)
-	const calculator = new transactionCalculator(transactions)
-	const dataset = calculator.monthlyBalance(12)
+	const calculator = new TransactionCalculator(transactions)
+	const dataset = calculator.monthlyBalances({ months: 12 })
 
 	useEffect(() => {
 		if (dimensions && dataset.length > 0) {
@@ -25,8 +25,8 @@ export default function BalanceGraph() {
 			const innerWidth = width - margin.left - margin.right
 			const innerHeight = height - margin.top - margin.bottom
 
-			const balance = d => d.income - d.expences
-			const savingsRate = d => ((d.income - d.expences) / d.income) * 100
+			const balance = d => d.income - d.expense
+			const savingsRate = d => ((d.income - d.expense) / d.income) * 100
 			const formattedDates = d => dayjs(d.date).format('M/YYYY')
 
 			const [minValue, maxValue] = d3.extent(dataset, d => balance(d))
@@ -62,7 +62,7 @@ export default function BalanceGraph() {
 
 			const tooltipText = d => `${dayjs(d.date).format('MMM YYYY')}</br>
                                       income: ${d.income.toFixed(2)}€</br>
-                                      expences: ${d.expences.toFixed(2)}€</br>
+                                      expense: ${d.expense.toFixed(2)}€</br>
                                       balance: ${(balance(d) >= 0 ? '+' : '') + balance(d).toFixed(2)}€</br>
                                       savings rate: ${savingsRate(d).toFixed(2)}%`
 			const yPosition = d => margin.top + positiveBarRange - Math.max(0, positiveYScale(balance(d)))

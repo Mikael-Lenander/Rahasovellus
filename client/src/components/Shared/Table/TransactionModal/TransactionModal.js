@@ -10,7 +10,6 @@ function TransactionModal({ show, handleClose, transaction }) {
 	const dispatch = useDispatch()
 
 	function onSubmit({ state }) {
-		console.log('TransactionModal onSubmit', state)
 		const { category, amount, comment, date } = state
 		dispatch(
 			updateTransaction({

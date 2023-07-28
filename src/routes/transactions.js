@@ -1,10 +1,8 @@
 const router = require('express').Router()
-const datasetRouters = require('./transaction/dataset')
 const Transaction = require('../models/transaction')
 const User = require('../models/user')
 const dayjs = require('dayjs')
 
-router.use('/dataset', datasetRouters)
 
 router.post('/new', async (req, res) => {
 	const { userId, type, category, amount, date, comment = '' } = req.body

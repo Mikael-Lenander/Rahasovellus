@@ -2,11 +2,11 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { useSelector } from 'react-redux'
-import transactionCalculator from '../../../../../utils/transactionCalculator'
+import TransactionCalculator from '../../../../../utils/TransactionCalculator'
 
 export default function CategoryListItem({ category, handleShowModal, type }) {
 	const transactions = useSelector(state => state.transactions.data)
-	const calculator = new transactionCalculator(transactions)
+	const calculator = new TransactionCalculator(transactions)
 	const numOfTransactions = calculator.numberOfTransactions(category)
 
 	return (

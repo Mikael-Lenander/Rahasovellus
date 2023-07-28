@@ -2,13 +2,11 @@ import React from 'react'
 import LoadingScreen from '../../Shared/LoadingScreen/LoadingScreen'
 import { useSelector } from 'react-redux'
 import Table from '../../Shared/Table/Table'
+import { sortedByDate } from '../../../utils'
 
 export default function TransactionTable() {
 	const transactions = useSelector(state => state.transactions.data)
-	const latestTransactions = transactions
-		.filter(obj => new Date(obj.date) <= new Date())
-		.sort((a, b) => new Date(b.date) - new Date(a.date))
-		.slice(0, 15)
+	const latestTransactions = sortedByDate(transactions.filter(obj => new Date(obj.date) <= new Date()), 'desc').slice(0, 15)
 
 	const fetching = useSelector(state => state.transactions.fetching)
 

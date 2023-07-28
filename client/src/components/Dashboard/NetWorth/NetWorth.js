@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import transactionCalculator from '../../../utils/transactionCalculator'
+import TransactionCalculator from '../../../utils/TransactionCalculator'
 import LoadingScreen from '../../Shared/LoadingScreen/LoadingScreen'
 import './NetWorth.css'
 
@@ -8,7 +8,7 @@ export default function NetWorth() {
 	const transactions = useSelector(state => state.transactions.data)
 	const initCapital = useSelector(state => state.user.data.initCapital)
 	console.log('transactions', transactions)
-	const calculator = new transactionCalculator(transactions, initCapital)
+	const calculator = new TransactionCalculator(transactions, initCapital)
 	const netWorth = calculator.netWorth()
 	const lastMonthDifference = calculator.netWorth(1)
 	const lastThreeMonthsDifference = calculator.netWorth(3)

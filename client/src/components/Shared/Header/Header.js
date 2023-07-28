@@ -32,7 +32,7 @@ export default function Header({ homeLink, links = [] }) {
 							</button>
 						) : (
 							<button
-								key={text}
+								key='logout'
 								className='btn btn-link'
 								style={{ color: 'white' }}
 								onClick={() => {

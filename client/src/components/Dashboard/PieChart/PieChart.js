@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useCallback } from 'react'
 import LoadingScreen from '../../Shared/LoadingScreen/LoadingScreen'
 import { useSelector } from 'react-redux'
 import * as d3 from 'd3'
-import transactionCalculator from '../../../utils/transactionCalculator'
+import TransactionCalculator from '../../../utils/TransactionCalculator'
 import useResizeObserver from '../../../hooks/useResizeObserver'
 import tippy from 'tippy.js'
 import './PieChart.css'
@@ -12,11 +12,11 @@ export default function PieChart({ className, title, type, tippys }) {
 	const svgRef = useRef()
 	const containerRef = useRef(null)
 	const dimensions = useResizeObserver(containerRef)
-	const calculator = new transactionCalculator(transactions)
+	const calculator = new TransactionCalculator(transactions)
 	const dataset = calculator.monthlyCategories(type)
-	const sums = calculator.monthlyBalance(1)[0] || { income: 0, expences: 0 }
+	const sums = calculator.monthlyBalances({ months: 1 })[0] || { income: 0, expense: 0 }
 
-	const total = type === 'income' ? sums.income : sums.expences
+	const total = type === 'income' ? sums.income : sums.expense
 
 	const sortSlices = useCallback(data => {
 		if (data.length === 0) return []
