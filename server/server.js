@@ -1,4 +1,6 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const express = require('express')
 const session = require('express-session')
 const cors = require('cors')
@@ -35,7 +37,7 @@ app.use(session({
   saveUninitialized: false,
   proxy: true,
   cookie: {
-    secure: true,
+    secure: process.env.NODE_ENV === 'production' ? true : false,
     sameSite: 'none',
     maxAge: 60 * 60 * 24 * 1000
   }
