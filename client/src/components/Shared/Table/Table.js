@@ -9,7 +9,8 @@ export default function Table({items}) {
           <col span="1" style={{width: '15%'}}/>
           <col span="1" style={{width: '15%'}}/>
           <col span="1" style={{width: '20%'}}/>
-          <col span="1" style={{width: '40%'}}/>
+          <col span="1" style={{width: '30%'}}/>
+          <col span="1" style={{width: '10%'}}/>
           <col span="1" style={{width: '10%'}}/>
         </colgroup>
         <thead>

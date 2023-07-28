@@ -15,6 +15,12 @@
     width: 90%;
 }
 
+#modal-transaction-form > .form-width {
+    margin: auto;
+    display: block;
+    margin-top: 15px;
+}
+
 .radio-button {
     padding: 0px 4px 0px 4px;
     border-radius: 50px;
