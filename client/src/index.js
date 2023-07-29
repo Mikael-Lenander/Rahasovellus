@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import App from './components/App/App'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
@@ -8,9 +8,11 @@ import rootReducer from './reducers/rootReducer'
 
 const store = createStore(rootReducer, compose(applyMiddleware(thunk)))
 
-ReactDOM.render(
+const container = document.getElementById('root')
+const root = createRoot(container)
+
+root.render(
 	<Provider store={store}>
 		<App />
-	</Provider>,
-	document.getElementById('root')
+	</Provider>
 )
