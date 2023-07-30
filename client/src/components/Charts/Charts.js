@@ -1,33 +1,57 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import Header from '../Shared/Header/Header'
 import DatePicker from 'react-datepicker'
-import NetWorthChart from './ChartComponents/NetWorthChart/NetWorthChart'
+import NetWorthChart from './ChartComponents/NetWorthChart'
+import MonthlyBarChart from './ChartComponents/MonthlyBarChart'
 import LoadingScreen from '../Shared/LoadingScreen/LoadingScreen'
 import TransactionCalculator from '../../utils/TransactionCalculator'
+import useResizeObserver from '../../hooks/useResizeObserver'
 import dayjs from 'dayjs'
 import './Charts.css'
+import { Chart as ChartJS, CategoryScale, LinearScale, Title, Tooltip, TimeScale, PointElement, LineElement, Filler, BarElement } from 'chart.js'
+import { CustomColorScale } from '../../utils/chartjsPlugins'
+
+ChartJS.register(CategoryScale, LinearScale, Title, Tooltip, TimeScale, PointElement, LineElement, Filler, BarElement, CustomColorScale)
+ChartJS.defaults.color = 'black'
 
 const CHARTS = {
 	NET_WORTH: 'Net worth',
+	MONTHLY_EXPENSES: 'Monthly expenses',
+	MONTHLY_INCOME: 'Monthly income'
+}
+export const COLORS = {
+	RED: 'rgb(166, 70, 65)',
+	GREEN: 'rgb(41, 133, 47)',
+	LIGHT_GREEN: 'rgb(41, 133, 47, 0.5)',
+	LIGHT_RED: 'rgb(166, 70, 65, 0.5)'
 }
 
 export default function Charts() {
 	const transactions = useSelector(state => state.transactions.data)
-	const oldestTransactionDate = useSelector(state => state.user.data.oldestTransactionDate)
+	const { oldestTransactionDate, initCapital } = useSelector(state => state.user.data)
 	const [chart, setChart] = useState(CHARTS.NET_WORTH)
 	const [startDate, setStartDate] = useState(new Date(oldestTransactionDate))
 	const [endDate, setEndDate] = useState(new Date())
 	const [svgHeight, setSvgHeight] = useState(450)
-	const datasetGenerator = new TransactionCalculator(transactions)
+	const chartRef = useRef()
+	const chartSize = useResizeObserver(chartRef)
+	const datasetGenerator = new TransactionCalculator(transactions, initCapital)
 
 	function drawChart(chart) {
 		const startDateString = startDate ? dayjs(startDate).format('YYYY/M/D') : dayjs(oldestTransactionDate).format('YYYY/M/D')
 		const endDateString = endDate ? dayjs(endDate).format('YYYY/M/D') : dayjs(100000000000000).format('YYYY/M/D')
+		let dataset
 		switch (chart) {
 			case CHARTS.NET_WORTH:
-				const dataset = datasetGenerator.netWorths(startDateString, endDateString)
-				return <NetWorthChart dataset={dataset} onSetSvgHeight={onSetSvgHeight} />
+				dataset = datasetGenerator.netWorths(startDateString, endDateString)
+				return <NetWorthChart dataset={dataset} size={chartSize} />
+			case CHARTS.MONTHLY_EXPENSES:
+				dataset = datasetGenerator.monthlyBalances({ startDate: startDateString, endDate: endDateString })
+				return <MonthlyBarChart dataset={dataset} size={chartSize} title='Monthly Expenses' type='expense' color={COLORS.RED} />
+			case CHARTS.MONTHLY_INCOME:
+				dataset = datasetGenerator.monthlyBalances({ startDate: startDateString, endDate: endDateString })
+				return <MonthlyBarChart dataset={dataset} size={chartSize} title='Monthly Income' type='income' color={COLORS.GREEN} />
 			default:
 				throw new Error('Invalid chart type')
 		}

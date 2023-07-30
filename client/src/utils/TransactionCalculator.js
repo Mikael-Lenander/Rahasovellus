@@ -9,14 +9,13 @@ export default class TransactionCalculator {
 
 	monthlyCategories(type) {
 		const currentMonth = dayjs().startOf('month')
-		return this.transactions
-			.reduce((obj, transaction) => {
-				if (transaction.type !== type) return obj
-				if (!currentMonth.isSame(dayjs(transaction.date), 'month')) return obj
-				if (!obj.hasOwnProperty(transaction.category)) obj[transaction.category] = 0
-				obj[transaction.category] += transaction.amount
-				return obj
-			}, {})
+		return this.transactions.reduce((obj, transaction) => {
+			if (transaction.type !== type) return obj
+			if (!currentMonth.isSame(dayjs(transaction.date), 'month')) return obj
+			if (!obj.hasOwnProperty(transaction.category)) obj[transaction.category] = 0
+			obj[transaction.category] += transaction.amount
+			return obj
+		}, {})
 	}
 
 	monthlyBalances({ startDate, endDate, months }) {
@@ -24,24 +23,17 @@ export default class TransactionCalculator {
 			startDate = dayjs().subtract(months, 'month')
 			endDate = dayjs()
 		}
-		return sortedByDate(this.transactions).reduce(
-			(arr, transaction) => {
-				const date = dayjs(transaction.date)
-				if (date.isBefore(startDate, 'month') || date.isAfter(endDate, 'month')) return arr
-				const lastDate = dayjs(arr[arr.length - 1].date)
-				if (date.isSame(lastDate, 'month')) {
-					arr[arr.length - 1][transaction.type] += transaction.amount
-					return arr
-				}
-				return arr.concat({
-					date: date.startOf('month'),
-					income: transaction.type === 'income' ? transaction.amount : 0,
-					expense: transaction.type === 'expense' ? transaction.amount : 0,
-				})
-			},
-			[{ date: startDate.startOf('month'), income: 0, expense: 0 }]
-		)
-		.filter(obj => obj.income !== 0 || obj.expense !== 0)
+		const balances = this.transactions.reduce((obj, transaction) => {
+			const date = dayjs(transaction.date).startOf('month')
+			const dateString = date.format('M/YYYY')
+			if (date.isBefore(startDate, 'month') || date.isAfter(endDate, 'month')) return obj
+			if (!(dateString in obj)) {
+				obj[dateString] = { date, income: 0, expense: 0 }
+			}
+			obj[dateString][transaction.type] += transaction.amount
+			return obj
+		}, {})
+		return sortedByDate(Object.values(balances))
 	}
 
 	netWorth(months = null) {
@@ -60,6 +52,7 @@ export default class TransactionCalculator {
 
 	netWorths(startDate, endDate) {
 		const initCapital = this.initCapitalAt(startDate)
+		console.log('init capital', this.initCapital)
 		return sortedByDate(this.transactions).reduce(
 			(arr, transaction) => {
 				const currentDate = dayjs(transaction.date)
