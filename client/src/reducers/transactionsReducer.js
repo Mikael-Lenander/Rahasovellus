@@ -4,12 +4,12 @@ import {
 	FETCH_TRANSACTIONS,
 	LOADING_TRANSACTIONS,
 	UPDATE_TRANSACTION_CATEGORIES,
-	UPDATE_TRANSACTION,
+	UPDATE_TRANSACTION
 } from '../constants/actionTypes'
 
 const defaultState = {
 	data: [],
-	fetching: true,
+	fetching: true
 }
 
 const transactionsReducer = function (state = defaultState, action) {
@@ -23,12 +23,12 @@ const transactionsReducer = function (state = defaultState, action) {
 		case DELETE_TRANSACTION:
 			return {
 				data: state.data.filter(transaction => transaction._id !== action.id),
-				fetching: false,
+				fetching: false
 			}
 		case UPDATE_TRANSACTION:
 			return {
 				data: state.data.map(transaction => (transaction._id === action.transaction._id ? action.transaction : transaction)),
-				fetching: false,
+				fetching: false
 			}
 		case UPDATE_TRANSACTION_CATEGORIES:
 			return {
@@ -36,7 +36,7 @@ const transactionsReducer = function (state = defaultState, action) {
 					if (action.data.includes(transaction._id)) transaction.category = 'Other'
 					return transaction
 				}),
-				fetching: false,
+				fetching: false
 			}
 		default:
 			return state

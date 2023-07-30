@@ -6,7 +6,10 @@ import { sortedByDate } from '../../../utils'
 
 export default function TransactionTable() {
 	const transactions = useSelector(state => state.transactions.data)
-	const latestTransactions = sortedByDate(transactions.filter(obj => new Date(obj.date) <= new Date()), 'desc').slice(0, 15)
+	const latestTransactions = sortedByDate(
+		transactions.filter(obj => new Date(obj.date) <= new Date()),
+		'desc'
+	).slice(0, 15)
 
 	const fetching = useSelector(state => state.transactions.fetching)
 

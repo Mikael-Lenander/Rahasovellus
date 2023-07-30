@@ -19,14 +19,14 @@ authRouters = function (passport) {
 			if (user)
 				return res.json({
 					messages: [...errorMessages, 'User already exists'],
-					success: false,
+					success: false
 				})
 			if (errorMessages.length > 0) return res.json({ messages: errorMessages, success: false })
 			try {
 				const hashedPassword = await bcrypt.hash(password, 10)
 				const newUser = new User({
 					username: username,
-					password: hashedPassword,
+					password: hashedPassword
 				})
 				newUser.save().then(() => {
 					res.json({ messages: ['Registration successful'], success: true })
@@ -44,7 +44,7 @@ authRouters = function (passport) {
 			if (!user)
 				return res.json({
 					message: 'Invalid username or password',
-					success: false,
+					success: false
 				})
 			req.logIn(user, err => {
 				if (err) return console.log(err)
@@ -59,8 +59,8 @@ authRouters = function (passport) {
 						initCapital,
 						categories,
 						joinedAt,
-						oldestTransactionDate,
-					},
+						oldestTransactionDate
+					}
 				})
 			})
 		})(req, res, next)
@@ -79,8 +79,8 @@ authRouters = function (passport) {
 				initCapital,
 				categories,
 				joinedAt,
-				oldestTransactionDate,
-			},
+				oldestTransactionDate
+			}
 		})
 	})
 

@@ -6,7 +6,7 @@ const getTransactions = () => async dispatch => {
 	try {
 		dispatch({ type: LOADING_TRANSACTIONS })
 		const { data } = await axios.get(`${baseUrl}/transaction/all`, {
-			withCredentials: true,
+			withCredentials: true
 		})
 		dispatch({ type: FETCH_TRANSACTIONS, data: data })
 	} catch (error) {

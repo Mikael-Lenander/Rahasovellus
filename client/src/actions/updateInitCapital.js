@@ -8,14 +8,14 @@ const updateInitCapital = initCapital => async dispatch => {
 		const { data } = await axios.put(`${baseUrl}/user/initCapital`, { initCapital }, { withCredentials: true })
 		dispatch({
 			type: FETCH_UPDATE_MESSAGE,
-			data: { message: data.message, success: data.success },
+			data: { message: data.message, success: data.success }
 		})
 		dispatch({ type: UPDATE_INIT_CAPITAL, data: data.data })
 	} catch (error) {
 		console.log(error)
 		dispatch({
 			type: FETCH_UPDATE_MESSAGE,
-			data: { message: 'Updating initial capital failed', success: false },
+			data: { message: 'Updating initial capital failed', success: false }
 		})
 	}
 }

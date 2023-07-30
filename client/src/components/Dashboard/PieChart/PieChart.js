@@ -81,7 +81,7 @@ export default function PieChart({ className, title, type, tippys }) {
 			const tippys = tippy(`.slice-${type}`, {
 				allowHTML: true,
 				arrow: false,
-				animation: false,
+				animation: false
 			})
 
 			if (width > 370) {
@@ -159,7 +159,7 @@ export default function PieChart({ className, title, type, tippys }) {
 						height: 50,
 						position: 'absolute',
 						top: '50%',
-						marginTop: -25,
+						marginTop: -25
 					}}
 					classes='flex-center'
 				/>

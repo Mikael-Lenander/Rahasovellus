@@ -8,7 +8,7 @@ const transactionFormReducer = (state, action) => {
 		case CHANGE_INPUT:
 			return {
 				...state,
-				[action.inputId]: action.value,
+				[action.inputId]: action.value
 			}
 		default:
 			throw new Error(`Unhandled action type: ${action.type}`)

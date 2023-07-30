@@ -17,19 +17,19 @@ function timeOfDate(date) {
 }
 
 export function extractRGBValues(rgbString) {
-  const matches = rgbString.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-  if (matches) {
-    const [, red, green, blue] = matches;
-    return {
-      red: parseInt(red, 10),
-      green: parseInt(green, 10),
-      blue: parseInt(blue, 10),
-    };
-  } else {
-    throw new Error('Invalid RGB color string');
-  }
+	const matches = rgbString.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/)
+	if (matches) {
+		const [, red, green, blue] = matches
+		return {
+			red: parseInt(red, 10),
+			green: parseInt(green, 10),
+			blue: parseInt(blue, 10)
+		}
+	} else {
+		throw new Error('Invalid RGB color string')
+	}
 }
 
 export function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+	return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
 }

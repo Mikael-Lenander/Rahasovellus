@@ -64,14 +64,14 @@ export default class TransactionCalculator {
 				}
 				return arr.concat({
 					date: dayjs(transaction.date).startOf('day').toString(),
-					capital: arr[arr.length - 1].capital + amount(transaction),
+					capital: arr[arr.length - 1].capital + amount(transaction)
 				})
 			},
 			[
 				{
 					date: new Date(startDate),
-					capital: initCapital,
-				},
+					capital: initCapital
+				}
 			]
 		)
 	}

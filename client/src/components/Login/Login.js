@@ -35,7 +35,7 @@ export default function Login() {
 				homeLink={{ onClick: clearMessages }}
 				links={[
 					{ path: '/login', text: 'Login' },
-					{ path: '/register', text: 'Register', onClick: clearMessages },
+					{ path: '/register', text: 'Register', onClick: clearMessages }
 				]}
 			/>
 			<main className='background flex-center'>

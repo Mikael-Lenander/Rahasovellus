@@ -8,7 +8,7 @@ const updateTransaction = transaction => async dispatch => {
 		dispatch({ type: UPDATE_TRANSACTION, transaction: data.transaction })
 		dispatch({
 			type: UPDATE_OLDEST_TRANSACTION_DATE,
-			data: data.oldestTransactionDate,
+			data: data.oldestTransactionDate
 		})
 	} catch (error) {
 		console.log(error)

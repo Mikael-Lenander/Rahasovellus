@@ -10,7 +10,7 @@ const getRegisterMessages = credentials => async dispatch => {
 		console.log(error)
 		dispatch({
 			type: FETCH_REGISTER_MESSAGES,
-			data: { messages: ['Registration failed'], success: false },
+			data: { messages: ['Registration failed'], success: false }
 		})
 	}
 }

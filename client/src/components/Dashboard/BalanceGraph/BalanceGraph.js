@@ -83,7 +83,7 @@ export default function BalanceGraph() {
 			const tippys = tippy('.rect', {
 				allowHTML: true,
 				arrow: false,
-				animation: false,
+				animation: false
 			})
 
 			svg.select('.y-axis').attr('transform', `translate(${margin.left}, 0)`).style('font-size', '15px').call(yAxis)
@@ -130,7 +130,7 @@ export default function BalanceGraph() {
 						height: 60,
 						position: 'absolute',
 						top: '50%',
-						marginTop: -30,
+						marginTop: -30
 					}}
 					classes='flex-center'
 				/>

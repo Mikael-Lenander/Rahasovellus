@@ -28,7 +28,7 @@ export default function Register(props) {
 				homeLink={true}
 				links={[
 					{ path: '/login', text: 'Login' },
-					{ path: '/register', text: 'Register' },
+					{ path: '/register', text: 'Register' }
 				]}
 			/>
 			<main className='background flex-center'>

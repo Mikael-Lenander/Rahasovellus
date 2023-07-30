@@ -17,7 +17,7 @@ function TransactionModal({ show, handleClose, transaction }) {
 				category,
 				amount,
 				comment,
-				date: dateWithTime(date, transaction.date),
+				date: dateWithTime(date, transaction.date)
 			})
 		)
 		handleClose()
@@ -27,7 +27,7 @@ function TransactionModal({ show, handleClose, transaction }) {
 		category: transaction.category,
 		amount: transaction.amount,
 		comment: transaction.comment,
-		date: new Date(transaction.date),
+		date: new Date(transaction.date)
 	}
 
 	return (

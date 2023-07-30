@@ -6,7 +6,7 @@ export default function TransactionSearch({ search }) {
 	let categoryTypes = useSelector(state => state.user.data.categories)
 	categoryTypes = {
 		income: ['Any', ...categoryTypes.income],
-		expense: ['Any', ...categoryTypes.expense],
+		expense: ['Any', ...categoryTypes.expense]
 	}
 	const [selectedCategoryType, setSelectedCategoryType] = useState('any')
 	const [categories, setCategories] = useState(['Any'])
@@ -31,7 +31,7 @@ export default function TransactionSearch({ search }) {
 			minDate: minDate,
 			maxDate: maxDate,
 			type: selectedCategoryType,
-			category: category,
+			category: category
 		})
 	}
 	return (

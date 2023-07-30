@@ -8,7 +8,7 @@ router.put('/initCapital', (req, res) => {
 	const { initCapital } = req.body
 	const errorMessage = {
 		message: 'Updating initial capital failed',
-		success: false,
+		success: false
 	}
 	User.findById(userId, (err, user) => {
 		if (err) return res.json(errorMessage)
@@ -19,7 +19,7 @@ router.put('/initCapital', (req, res) => {
 			res.json({
 				message: 'Initial capital updated',
 				success: true,
-				data: user.initCapital,
+				data: user.initCapital
 			})
 		})
 	})
@@ -34,7 +34,7 @@ router.put('/password', async (req, res) => {
 		if (match)
 			return res.json({
 				message: 'This is your current password',
-				success: false,
+				success: false
 			})
 	} catch (error) {
 		console.log(error)
@@ -43,7 +43,7 @@ router.put('/password', async (req, res) => {
 	if (password.length < 6)
 		return res.json({
 			message: 'Password should be at least 6 characters long',
-			success: false,
+			success: false
 		})
 	User.findById(userId, async (err, user) => {
 		if (err) return res.json(errorMessage)
@@ -87,7 +87,7 @@ router.delete('/category', async (req, res) => {
 		await Transaction.updateMany({ category: category }, { $set: { category: 'Other' } })
 		res.json({
 			categories: categories,
-			transactionIds: updatedTransactions.map(transaction => transaction._id),
+			transactionIds: updatedTransactions.map(transaction => transaction._id)
 		})
 	} catch (error) {
 		console.log(error)

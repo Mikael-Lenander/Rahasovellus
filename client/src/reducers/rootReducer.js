@@ -10,5 +10,5 @@ export default combineReducers({
 	registerMessages: registerMessagesReducer,
 	loginMessage: loginMessageReducer,
 	transactions: transactionsReducer,
-	updateMessage: updateMessageReducer,
+	updateMessage: updateMessageReducer
 })

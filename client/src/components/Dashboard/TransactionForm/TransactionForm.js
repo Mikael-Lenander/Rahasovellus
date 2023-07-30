@@ -19,7 +19,7 @@ export default function TransactionForm() {
 			category: category,
 			amount: amount,
 			date: dateWithTime(date, 'current'),
-			comment: comment,
+			comment: comment
 		}
 		dispatch(addTransaction(transaction))
 		setInput('amount', '')
@@ -41,7 +41,7 @@ export default function TransactionForm() {
 							categoryType: 'income',
 							date: new Date(),
 							amount: '',
-							comment: '',
+							comment: ''
 						}}
 					>
 						{state => (

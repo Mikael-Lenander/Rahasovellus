@@ -8,7 +8,7 @@ export default function Home() {
 			<Header
 				links={[
 					{ path: '/login', text: 'Login' },
-					{ path: '/register', text: 'Register' },
+					{ path: '/register', text: 'Register' }
 				]}
 			/>
 			<main className='flex-center background'>

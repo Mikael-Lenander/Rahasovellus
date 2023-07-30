@@ -3,29 +3,29 @@ const mongoose = require('mongoose')
 const transactionSchema = new mongoose.Schema({
 	userId: {
 		type: String,
-		required: true,
+		required: true
 	},
 	type: {
 		type: String,
 		required: true,
-		enum: ['income', 'expense'],
+		enum: ['income', 'expense']
 	},
 	category: {
 		type: String,
-		required: true,
+		required: true
 	},
 	amount: {
 		type: Number,
 		required: true,
-		min: 0,
+		min: 0
 	},
 	date: {
 		type: Date,
-		required: true,
+		required: true
 	},
 	comment: {
-		type: String,
-	},
+		type: String
+	}
 })
 
 const Transaction = mongoose.model('Transaction', transactionSchema)

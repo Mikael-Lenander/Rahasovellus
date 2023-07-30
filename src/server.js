@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000
 
 mongoose.connect(process.env.DB_URI, {
 	useNewUrlParser: true,
-	useUnifiedTopology: true,
+	useUnifiedTopology: true
 })
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
@@ -34,7 +34,7 @@ app.use(
 	cors({
 		origin: ['https://rahasovellus.herokuapp.com', 'http://localhost:3000', 'http://localhost:5000'],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-		credentials: true,
+		credentials: true
 	})
 )
 
@@ -47,8 +47,8 @@ app.use(
 		cookie: {
 			secure: process.env.NODE_ENV === 'production' ? true : false,
 			sameSite: 'none',
-			maxAge: 60 * 60 * 24 * 1000,
-		},
+			maxAge: 60 * 60 * 24 * 1000
+		}
 	})
 )
 app.use(cookieParser(process.env.SESSION_SECRET))

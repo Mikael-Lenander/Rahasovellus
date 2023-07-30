@@ -2,7 +2,7 @@ import { ADD_CATEGORY, DELETE_CATEGORY, LOGGED_IN, LOGGED_OUT, UPDATE_INIT_CAPIT
 
 const defaultState = {
 	data: '',
-	fetching: true,
+	fetching: true
 }
 
 const userReducer = function (state = defaultState, action) {
@@ -14,22 +14,22 @@ const userReducer = function (state = defaultState, action) {
 		case UPDATE_INIT_CAPITAL:
 			return {
 				data: { ...state.data, initCapital: action.data },
-				fetching: false,
+				fetching: false
 			}
 		case UPDATE_OLDEST_TRANSACTION_DATE:
 			return {
 				data: { ...state.data, oldestTransactionDate: action.data },
-				fetching: false,
+				fetching: false
 			}
 		case ADD_CATEGORY:
 			return {
 				data: { ...state.data, categories: action.data },
-				fetching: false,
+				fetching: false
 			}
 		case DELETE_CATEGORY:
 			return {
 				data: { ...state.data, categories: action.data },
-				fetching: false,
+				fetching: false
 			}
 		default:
 			return state

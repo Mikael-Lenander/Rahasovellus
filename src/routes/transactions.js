@@ -3,7 +3,6 @@ const Transaction = require('../models/transaction')
 const User = require('../models/user')
 const dayjs = require('dayjs')
 
-
 router.post('/new', async (req, res) => {
 	const { userId, type, category, amount, date, comment = '' } = req.body
 	let { _id, oldestTransactionDate } = req.user
@@ -14,7 +13,7 @@ router.post('/new', async (req, res) => {
 		category: category,
 		amount: Number(amount),
 		date: new Date(date),
-		comment: comment,
+		comment: comment
 	})
 	try {
 		const transaction = await newTransaction.save()
@@ -38,8 +37,8 @@ router.put('/update/:id', async (req, res) => {
 					category: category,
 					amount: Number(amount),
 					date: new Date(date),
-					comment: comment,
-				},
+					comment: comment
+				}
 			},
 			{ useFindAndModify: false, new: true }
 		)
@@ -72,7 +71,7 @@ router.delete('/delete/:id', async (req, res) => {
 		console.log('Transaction deleted')
 		res.send({
 			transaction: deletedTransaction._id,
-			oldestTransactionDate: oldestTransactionDate,
+			oldestTransactionDate: oldestTransactionDate
 		})
 	} catch (error) {
 		console.log(error)

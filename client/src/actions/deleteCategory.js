@@ -8,7 +8,7 @@ const deleteCategory = categoryObj => async dispatch => {
 		dispatch({ type: DELETE_CATEGORY, data: data.categories })
 		dispatch({
 			type: UPDATE_TRANSACTION_CATEGORIES,
-			data: data.transactionIds,
+			data: data.transactionIds
 		})
 	} catch (error) {
 		console.log(error)

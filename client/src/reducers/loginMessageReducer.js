@@ -2,7 +2,7 @@ import { FETCH_LOGIN_MESSAGE, CLEAR_LOGIN_MESSAGE } from '../constants/actionTyp
 
 const defaultState = {
 	message: '',
-	success: false,
+	success: false
 }
 
 const loginMessagedReducer = function (state = defaultState, action) {

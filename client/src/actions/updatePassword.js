@@ -10,7 +10,7 @@ const updatePassword = password => async dispatch => {
 		console.log(error)
 		dispatch({
 			type: FETCH_UPDATE_MESSAGE,
-			data: { message: 'Updating password failed', success: false },
+			data: { message: 'Updating password failed', success: false }
 		})
 	}
 }
