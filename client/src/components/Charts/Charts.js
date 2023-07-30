@@ -41,7 +41,9 @@ export default function Charts() {
 		}
 	}
 
-	const fetching = useSelector(state => state.transactions.fetching)
+	const fetchingTransactions = useSelector(state => state.transactions.fetching)
+	const fetchingUser = useSelector(state => state.user.fetching)
+	const fetching = fetchingTransactions || fetchingUser || chartSize == null
 
 	return (
 		<>
@@ -88,13 +90,13 @@ export default function Charts() {
 						</select>
 					</div>
 				</form>
-				{fetching ? (
-					<LoadingScreen style={{ color: 'black', width: 60, height: 60 }} classes='chart flex-center' />
-				) : (
-					<div className='chart' style={{ height: svgHeight }}>
-						{drawChart(chart)}
-					</div>
-				)}
+				<div className='chart' style={{ height: svgHeight }} ref={chartRef}>
+					{fetching ? (
+						<LoadingScreen style={{ color: 'black', width: 60, height: 60 }} containerStyle={{ width: '100%', height: '100%' }} classes='flex-center' />
+					) : (
+						drawChart(chart)
+					)}
+				</div>
 			</main>
 		</>
 	)

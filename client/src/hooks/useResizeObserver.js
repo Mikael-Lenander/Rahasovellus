@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 const useResizeObserver = ref => {
 	const [dimensions, setDimensions] = useState(null)
 	useEffect(() => {
+		if (ref.current == null) return
 		const observeTarget = ref.current
 		const resizeObserver = new ResizeObserver(entries => {
 			entries.forEach(entry => {

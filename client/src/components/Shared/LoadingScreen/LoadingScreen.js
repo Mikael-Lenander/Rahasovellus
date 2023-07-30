@@ -3,12 +3,12 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './LoadingScreen.css'
 
-export default function LoadingScreen({ classes, ...rest }) {
+export default function LoadingScreen({ classes, containerStyle={}, ...rest }) {
 	return (
 		<>
-			<main className={classes}>
+			<div className={classes} style={containerStyle}>
 				<FontAwesomeIcon icon={faCircleNotch} className='spinner' {...rest} />
-			</main>
+			</div>
 		</>
 	)
 }
