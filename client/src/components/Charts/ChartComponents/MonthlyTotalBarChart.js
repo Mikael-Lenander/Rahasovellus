@@ -2,9 +2,9 @@ import React from 'react'
 import { Bar } from 'react-chartjs-2'
 import { capitalize } from '../../../utils'
 import dayjs from 'dayjs'
+import { tooltipOptions, titleOptions } from '../chartOptions'
 
-export default function MonthlyBarChart({ dataset, title, type, size, color, yMax }) {
-	console.log('yMax', yMax)
+export default function MontlyTotalBarChart({ dataset, title, type, size, color, yMax }) {
 	return (
 		<Bar
 			data={{
@@ -12,8 +12,7 @@ export default function MonthlyBarChart({ dataset, title, type, size, color, yMa
 				datasets: [
 					{
 						data: dataset.map(obj => obj[type]),
-						label: capitalize(type),
-						backgroundColor: 'blue'
+						label: capitalize(type) + (type === 'expense' ? 's' : '')
 					}
 				]
 			}}
@@ -27,20 +26,8 @@ export default function MonthlyBarChart({ dataset, title, type, size, color, yMa
 				},
 				aspectRatio: size.width / size.height,
 				plugins: {
-					title: {
-						display: true,
-						text: title,
-						font: {
-							size: 25,
-							family: 'Roboto, sans-serif'
-						}
-					},
-					tooltip: {
-						callbacks: {
-							label: context => `${context.dataset.label}: ${context.formattedValue} €`
-						},
-						displayColors: false
-					},
+					title: titleOptions(title),
+					tooltip: tooltipOptions,
 					customColorScale: {
 						color: color
 					}

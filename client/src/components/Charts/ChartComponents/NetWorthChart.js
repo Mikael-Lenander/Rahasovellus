@@ -2,6 +2,7 @@ import { Line } from 'react-chartjs-2'
 import { COLORS } from '../Charts'
 import 'chartjs-adapter-date-fns'
 import { fi } from 'date-fns/locale'
+import { tooltipOptions, titleOptions } from '../chartOptions'
 
 export default function NetWorthChart({ dataset, size }) {
 
@@ -66,20 +67,8 @@ export default function NetWorthChart({ dataset, size }) {
 				},
 				aspectRatio: size.width / size.height,
 				plugins: {
-					title: {
-						display: true,
-						text: 'Net worth',
-						font: {
-							size: 25,
-							family: 'Roboto, sans-serif'
-						}
-					},
-					tooltip: {
-						callbacks: {
-							label: context => `${context.dataset.label}: ${context.formattedValue} €`
-						},
-						displayColors: false
-					},
+					title: titleOptions('Net worth'),
+					tooltip: tooltipOptions,
 					customColorScale: false
 				}
 			}}
