@@ -18,6 +18,6 @@ export const CustomColorScale = {
 		dataset.backgroundColor = dataset.data.map(value => generateColor(value, maxHeight, minHeight))
 	},
 	defaults: {
-		colorRange: 0.6
+		colorRange: 0.5
 	}
 }

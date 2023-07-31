@@ -18,7 +18,7 @@ export default class TransactionCalculator {
 		}, {})
 	}
 
-	monthlyBalances({ startDate, endDate, months }) {
+	monthlyBalances({ startDate, endDate, months, excludedCategories = [] }) {
 		if (months) {
 			startDate = dayjs().subtract(months, 'month')
 			endDate = dayjs()
@@ -27,6 +27,7 @@ export default class TransactionCalculator {
 			const date = dayjs(transaction.date).startOf('month')
 			const dateString = date.format('M/YYYY')
 			if (date.isBefore(startDate, 'month') || date.isAfter(endDate, 'month')) return obj
+			if (excludedCategories.includes(transaction.category)) return obj
 			if (!(dateString in obj)) {
 				obj[dateString] = { date, income: 0, expense: 0 }
 			}
@@ -34,6 +35,19 @@ export default class TransactionCalculator {
 			return obj
 		}, {})
 		return sortedByDate(Object.values(balances))
+	}
+
+	maxMonthlyBalances({ startDate, endDate, months }) {
+		const balances = this.monthlyBalances({ startDate, endDate, months })
+		return balances.reduce(
+			(maxObj, balance) => {
+				return {
+					income: Math.max(maxObj.income, balance.income),
+					expense: Math.max(maxObj.expense, balance.expense)
+				}
+			},
+			{ income: 0, expense: 0 }
+		)
 	}
 
 	netWorth(months = null) {
@@ -52,7 +66,6 @@ export default class TransactionCalculator {
 
 	netWorths(startDate, endDate) {
 		const initCapital = this.initCapitalAt(startDate)
-		console.log('init capital', this.initCapital)
 		return sortedByDate(this.transactions).reduce(
 			(arr, transaction) => {
 				const currentDate = dayjs(transaction.date)

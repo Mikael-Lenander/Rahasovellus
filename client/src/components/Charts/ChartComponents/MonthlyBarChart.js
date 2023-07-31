@@ -3,7 +3,8 @@ import { Bar } from 'react-chartjs-2'
 import { capitalize } from '../../../utils'
 import dayjs from 'dayjs'
 
-export default function MonthlyBarChart({ dataset, title, type, size, color }) {
+export default function MonthlyBarChart({ dataset, title, type, size, color, yMax }) {
+	console.log('yMax', yMax)
 	return (
 		<Bar
 			data={{
@@ -20,7 +21,8 @@ export default function MonthlyBarChart({ dataset, title, type, size, color }) {
 				responsive: true,
 				scales: {
 					y: {
-						beginAtZero: true
+						min: 0,
+						max: Math.ceil(yMax / 10) * 10
 					}
 				},
 				aspectRatio: size.width / size.height,
