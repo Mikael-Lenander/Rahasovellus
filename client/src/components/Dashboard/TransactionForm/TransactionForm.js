@@ -1,17 +1,25 @@
 import React from 'react'
 import LoadingScreen from '../../Shared/LoadingScreen/LoadingScreen'
-import { TextField, NumberField, SelectField, DateField, RadioGroup } from '../../Shared/Form/formFields'
+import { Field, SelectField, DateField, RadioGroup } from '../../Shared/Form/formFields'
 import { useSelector, useDispatch } from 'react-redux'
 import addTransaction from '../../../actions/addTransaction'
-import { TransactionForm as TForm } from '../../../hooks/useTransactionForm'
+import { useTransactionForm } from '../../../hooks/useForm'
 import { dateWithTime } from '../../../utils'
 import './TransactionForm.css'
 
 export default function TransactionForm() {
 	const user = useSelector(state => state.user.data)
 	const dispatch = useDispatch()
+	const { state, setInput } = useTransactionForm({
+		categoryType: 'income',
+		date: new Date(),
+		amount: '',
+		comment: ''
+	})
 
-	function onSubmit({ state, setInput }) {
+
+	function onSubmit(event) {
+		event.preventDefault()
 		const { date, categoryType, category, amount, comment } = state
 		const transaction = {
 			userId: user.id,
@@ -33,43 +41,37 @@ export default function TransactionForm() {
 				<LoadingScreen style={{ color: 'black', width: 60, height: 60 }} classes='flex-center dashboard-item transaction-form' />
 			) : (
 				<div className='transaction-form dashboard-item'>
-					<TForm
-						id='transaction-form'
-						className='transaction-form-container'
-						onSubmit={onSubmit}
-						initialState={{
-							categoryType: 'income',
-							date: new Date(),
-							amount: '',
-							comment: ''
-						}}
-					>
-						{state => (
-							<>
-								<h1 className='transaction-form-title form-width'>New transaction</h1>
-								<RadioGroup id='categoryType' values={['income', 'expense']} />
-								<TransactionFromFields state={state} />
-								<div className='form-width'>
-									<button className='btn btn-block form-submit' type='submit'>
-										Submit
-									</button>
-								</div>
-							</>
-						)}
-					</TForm>
+					<form id='transaction-form' className='transaction-form-container' onSubmit={onSubmit}>
+						<h1 className='transaction-form-title form-width'>New transaction</h1>
+						<RadioGroup id='categoryType' value={state.categoryType} values={['income', 'expense']} onChange={setInput} />
+						<TransactionFromFields state={state} setInput={setInput} />
+						<div className='form-width'>
+							<button className='btn btn-block form-submit' type='submit'>
+								Submit
+							</button>
+						</div>
+					</form>
 				</div>
 			)}
 		</>
 	)
 }
 
-export function TransactionFromFields({ state, ...props }) {
+export function TransactionFromFields({ state, setInput }) {
 	return (
 		<>
-			<SelectField id='category' values={state.categories} />
-			<NumberField id='amount' placeholder='amount' min='0.01' step='0.01' required />
-			<TextField id='comment' placeholder='comment (optional)' maxLength='40' />
-			<DateField id='date' placeholderText='date' required />
+			<div className='form-width'>
+				<SelectField id='category' value={state.category} values={state.categories} onChange={setInput} />
+			</div>
+			<div className='form-width'>
+				<Field id='amount' type='number' placeholder='amount' min='0.01' step='0.01' required value={state.amount} onChange={setInput} />
+			</div>
+			<div className='form-width'>
+				<Field id='comment' type='text' placeholder='comment (optional)' maxLength='40' value={state.comment} onChange={setInput} />
+			</div>
+			<div className='form-width'>
+				<DateField id='date' placeholderText='date' required value={state.date} onChange={setInput} />
+			</div>
 		</>
 	)
 }

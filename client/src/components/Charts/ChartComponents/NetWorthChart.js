@@ -4,7 +4,6 @@ import 'chartjs-adapter-date-fns'
 import { fi } from 'date-fns/locale'
 
 export default function NetWorthChart({ dataset, size }) {
-	console.log('size', size)
 
 	const lineColors = context => {
 		const dataset = context.chart.data.datasets[0].data

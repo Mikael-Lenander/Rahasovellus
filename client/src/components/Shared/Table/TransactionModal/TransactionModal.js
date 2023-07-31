@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
-import { TransactionForm } from '../../../../hooks/useTransactionForm'
+import { useTransactionForm } from '../../../../hooks/useForm'
 import { TransactionFromFields } from '../../../Dashboard/TransactionForm/TransactionForm'
 import { dateWithTime } from '../../../../utils'
 import updateTransaction from '../../../../actions/updateTransaction'
@@ -8,8 +8,21 @@ import { useDispatch } from 'react-redux'
 
 function TransactionModal({ show, handleClose, transaction }) {
 	const dispatch = useDispatch()
+	const { state, setInput } = useTransactionForm(
+		{
+			categoryType: transaction.type,
+			category: transaction.category,
+			amount: transaction.amount,
+			comment: transaction.comment,
+			date: new Date(transaction.date)
+		},
+		{
+			autoSetCategory: false
+		}
+	)
 
-	function onSubmit({ state }) {
+	function onSubmit(event) {
+		event.preventDefault()
 		const { category, amount, comment, date } = state
 		dispatch(
 			updateTransaction({
@@ -22,35 +35,24 @@ function TransactionModal({ show, handleClose, transaction }) {
 		)
 		handleClose()
 	}
-	const initialState = {
-		categoryType: transaction.type,
-		category: transaction.category,
-		amount: transaction.amount,
-		comment: transaction.comment,
-		date: new Date(transaction.date)
-	}
 
 	return (
-		<Modal show={show} onHide={handleClose} dialogClassName='modal-90w'>
-			<Modal.Header closeButton>
+		<Modal show={show} onHide={handleClose}>
+			<Modal.Header>
 				<Modal.Title>Edit transaction</Modal.Title>
 			</Modal.Header>
-			<TransactionForm onSubmit={onSubmit} initialState={initialState} id='modal-transaction-form'>
-				{state => (
-					<>
-						<TransactionFromFields state={state} />
-						<Modal.Body></Modal.Body>
-						<Modal.Footer>
-							<Button variant='secondary' onClick={handleClose}>
-								Close
-							</Button>
-							<Button variant='primary form-submit' type='submit'>
-								Save Changes
-							</Button>
-						</Modal.Footer>
-					</>
-				)}
-			</TransactionForm>
+			<form id='modal-transaction-form' onSubmit={onSubmit}>
+				<TransactionFromFields state={state} setInput={setInput} />
+				<Modal.Body></Modal.Body>
+				<Modal.Footer>
+					<Button variant='secondary' onClick={handleClose}>
+						Close
+					</Button>
+					<Button variant='primary form-submit' type='submit'>
+						Save Changes
+					</Button>
+				</Modal.Footer>
+			</form>
 		</Modal>
 	)
 }
