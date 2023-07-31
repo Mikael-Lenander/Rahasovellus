@@ -37,6 +37,27 @@ export default class TransactionCalculator {
 		return sortedByDate(Object.values(balances))
 	}
 
+	means(startDate, endDate, type) {
+		const sums = this.transactions.reduce((obj, transaction) => {
+			const date = dayjs(transaction.date).startOf('month')
+			const dateString = date.format('M/YYYY')
+			if (date.isBefore(startDate, 'month') || date.isAfter(endDate, 'month')) return obj
+			if (transaction.type !== type) return obj
+			if (!(transaction.category in obj)) {
+				obj[transaction.category] = monthRange(startDate, endDate).reduce((obj, month) => ({ ...obj, [month]: 0 }), {})
+			}
+			obj[transaction.category][dateString] += transaction.amount
+			return obj
+		}, {})
+		const sortedMeans = Object.keys(sums)
+			.map(category => {
+				const values = Object.values(sums[category])
+				return { category, mean: values.reduce((sum, value) => sum + value, 0) / values.length }
+			})
+			.toSorted((a, b) => b.mean - a.mean)
+		return sortedMeans.concat({ category: 'Total', mean: sortedMeans.reduce((sum, obj) => sum + obj.mean, 0) })
+	}
+
 	maxMonthlyBalances({ startDate, endDate, months }) {
 		const balances = this.monthlyBalances({ startDate, endDate, months })
 		return balances.reduce(
@@ -107,4 +128,14 @@ export default class TransactionCalculator {
 
 function amount(transaction) {
 	return transaction.amount * (transaction.type === 'income' ? 1 : -1)
+}
+
+function monthRange(startDate, endDate) {
+	const months = []
+	let currentMonth = dayjs(startDate)
+	while (currentMonth.isBefore(endDate, 'month') || currentMonth.isSame(endDate, 'month')) {
+		months.push(currentMonth.format('M/YYYY'))
+		currentMonth = currentMonth.add(1, 'month')
+	}
+	return months
 }

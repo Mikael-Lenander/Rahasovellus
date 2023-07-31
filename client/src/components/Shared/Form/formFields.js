@@ -18,8 +18,17 @@ export function SelectField({ id, value, onChange, values, ...props }) {
 	)
 }
 
-export function DateField({ id, value, onChange, ...props }) {
-	return <DatePicker className='form-control text-input' selected={value} onChange={date => onChange(id, date)} dateFormat='dd/MM/yyyy' {...props} />
+export function DateField({ id, value, onChange, mode = 'day', ...props }) {
+	const modes = {
+		day: {
+			dateFormat: 'dd/MM/yyyy'
+		},
+		month: {
+			dateFormat: 'MM/yyyy',
+			showMonthYearPicker: true
+		}
+	}
+	return <DatePicker className='form-control text-input' selected={value} onChange={date => onChange(id, date)} {...modes[mode]} {...props} />
 }
 
 export function RadioGroup({ id, value, onChange, values, ...props }) {

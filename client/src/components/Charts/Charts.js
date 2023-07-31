@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import Header from '../Shared/Header/Header'
 import NetWorthChart from './ChartComponents/NetWorthChart'
-import MonthlyBarChart from './ChartComponents/MonthlyBarChart'
+import MontlyTotalBarChart from './ChartComponents/MonthlyTotalBarChart'
+import CategoryBarChart from './ChartComponents/CategoryBarChart'
 import LoadingScreen from '../Shared/LoadingScreen/LoadingScreen'
 import { useForm } from '../../hooks/useForm'
 import { DateField, SelectField, CheckboxGroup } from '../Shared/Form/formFields'
@@ -22,11 +23,16 @@ ChartJS.defaults.color = 'black'
 const CHARTS = {
 	NET_WORTH: 'Net worth',
 	MONTHLY_EXPENSES: 'Monthly expenses',
-	MONTHLY_INCOME: 'Monthly income'
+	MONTHLY_INCOME: 'Monthly income',
+	INCOME_MEANS: 'Mean monthly income',
+	EXPENSE_MEANS: 'Mean monthly expences'
 }
-const CHECKBOXES = {
-	[CHARTS.MONTHLY_EXPENSES]: 'expense',
-	[CHARTS.MONTHLY_INCOME]: 'income'
+const dateModes = {
+	[CHARTS.NET_WORTH]: 'day',
+	[CHARTS.MONTHLY_EXPENSES]: 'month',
+	[CHARTS.MONTHLY_INCOME]: 'month',
+	[CHARTS.INCOME_MEANS]: 'month',
+	[CHARTS.EXPENSE_MEANS]: 'month'
 }
 export const COLORS = {
 	RED: 'rgb(166, 70, 65)',
@@ -34,6 +40,7 @@ export const COLORS = {
 	LIGHT_GREEN: 'rgb(41, 133, 47, 0.5)',
 	LIGHT_RED: 'rgb(166, 70, 65, 0.5)'
 }
+const showTotalCheckbox = [{ name: 'Show total', checked: false }]
 
 export default function Charts() {
 	const transactions = useSelector(state => state.transactions.data)
@@ -45,37 +52,55 @@ export default function Charts() {
 		startDate: new Date(oldestTransactionDate),
 		endDate: new Date(),
 		chart: CHARTS.NET_WORTH,
-		categories: []
+		options: []
 	})
+	const checkboxes = useMemo(
+		() => ({
+			[CHARTS.MONTHLY_EXPENSES]: intitialCheckboxes(categories.expense),
+			[CHARTS.MONTHLY_INCOME]: intitialCheckboxes(categories.income),
+			[CHARTS.INCOME_MEANS]: showTotalCheckbox,
+			[CHARTS.EXPENSE_MEANS]: showTotalCheckbox
+		}),
+		[categories]
+	)
 
 	useEffect(() => {
-		if (CHECKBOXES[state.chart]) {
-			setInput('categories', categories[CHECKBOXES[state.chart]].map(category => ({ name: category, checked: true })))
-		} else {
-			setInput('categories', [])
+		if (checkboxes[state.chart] != null) {
+			setInput('options', checkboxes[state.chart])
 		}
-	}, [state.chart, categories, setInput])
+	}, [state.chart, categories, setInput, checkboxes])
+
+	function intitialCheckboxes(categories) {
+		return categories.map(category => ({ name: category, checked: true }))
+	}
 
 	function drawChart() {
 		const { startDate, endDate, chart } = state
-		console.log('state', state)
 		const startDateString = startDate ? dayjs(startDate).format('YYYY/M/D') : dayjs(oldestTransactionDate).format('YYYY/M/D')
 		const endDateString = endDate ? dayjs(endDate).format('YYYY/M/D') : dayjs(100000000000000).format('YYYY/M/D')
-		const excludedCategories = state.categories.filter(category => !category.checked).map(category => category.name)
-		let dataset
-		let maxBalance
+		let excludedCategories, showTotal, dataset, maxBalance
 		switch (chart) {
 			case CHARTS.NET_WORTH:
 				dataset = datasetGenerator.netWorths(startDateString, endDateString)
 				return <NetWorthChart dataset={dataset} size={chartSize} />
 			case CHARTS.MONTHLY_EXPENSES:
+				excludedCategories = state.options.filter(option => !option.checked).map(option => option.name)
 				maxBalance = datasetGenerator.maxMonthlyBalances({ startDate: startDateString, endDate: endDateString }).expense
-				dataset = datasetGenerator.monthlyBalances({ startDate: startDateString, endDate: endDateString, excludedCategories })
-				return <MonthlyBarChart dataset={dataset} size={chartSize} title='Monthly Expenses' type='expense' color={COLORS.RED} yMax={maxBalance} />
+				dataset = datasetGenerator.monthlyBalances({ startDate: startDateString, endDate: endDateString, excludedCategories: excludedCategories })
+				return <MontlyTotalBarChart dataset={dataset} size={chartSize} title='Monthly Expenses' type='expense' color={COLORS.RED} yMax={maxBalance} />
 			case CHARTS.MONTHLY_INCOME:
+				excludedCategories = state.options.filter(option => !option.checked).map(option => option.name)
 				maxBalance = datasetGenerator.maxMonthlyBalances({ startDate: startDateString, endDate: endDateString }).income
-				dataset = datasetGenerator.monthlyBalances({ startDate: startDateString, endDate: endDateString, excludedCategories })
-				return <MonthlyBarChart dataset={dataset} size={chartSize} title='Monthly Income' type='income' color={COLORS.GREEN} yMax={maxBalance} />
+				dataset = datasetGenerator.monthlyBalances({ startDate: startDateString, endDate: endDateString, excludedCategories: excludedCategories })
+				return <MontlyTotalBarChart dataset={dataset} size={chartSize} title='Monthly Income' type='income' color={COLORS.GREEN} yMax={maxBalance} />
+			case CHARTS.INCOME_MEANS:
+				showTotal = state.options.find(option => option.name === 'Show total')?.checked
+				dataset = datasetGenerator.means(startDateString, endDateString, 'income')
+				return <CategoryBarChart dataset={dataset} size={chartSize} title='Mean monthly income' color={COLORS.GREEN} showTotal={showTotal} />
+			case CHARTS.EXPENSE_MEANS:
+				showTotal = state.options.find(option => option.name === 'Show total')?.checked
+				dataset = datasetGenerator.means(startDateString, endDateString, 'expense')
+				return <CategoryBarChart dataset={dataset} size={chartSize} title='Mean monthly expences' color={COLORS.RED} showTotal={showTotal} />
 			default:
 				throw new Error('Invalid chart type')
 		}
@@ -97,13 +122,20 @@ export default function Charts() {
 								<label htmlFor='startDate' style={{ margin: 0 }}>
 									From
 								</label>
-								<DateField id='startDate' minDate={new Date(oldestTransactionDate)} maxDate={state.endDate} value={state.startDate} onChange={setInput} />
+								<DateField
+									id='startDate'
+									minDate={new Date(oldestTransactionDate)}
+									maxDate={state.endDate}
+									value={state.startDate}
+									mode={dateModes[state.chart]}
+									onChange={setInput}
+								/>
 							</Col>
 							<Col className='chart-form-item' lg={4} md={6}>
 								<label htmlFor='endDate' style={{ margin: 0 }}>
 									To
 								</label>
-								<DateField id='endDate' minDate={state.startDate} value={state.endDate} onChange={setInput} />
+								<DateField id='endDate' minDate={state.startDate} value={state.endDate} mode={dateModes[state.chart]} onChange={setInput} />
 							</Col>
 							<Col className='chart-form-item' lg={4} md={12}>
 								<label htmlFor='type' style={{ margin: 0 }}>
@@ -112,13 +144,13 @@ export default function Charts() {
 								<SelectField id='chart' values={Object.values(CHARTS)} value={state.chart} onChange={setInput} />
 							</Col>
 						</Row>
-						{state.categories.length > 0 && (
-										<Row className='chart-row'>
-											<Col className='chart-form-item'>
-												<CheckboxGroup id='categories' values={state.categories} onChange={setCheckboxGroup} />
-											</Col>
-										</Row>
-									)}
+						{state.options.length > 0 && (
+							<Row className='chart-row'>
+								<Col className='chart-form-item'>
+									<CheckboxGroup id='options' values={state.options} onChange={setCheckboxGroup} />
+								</Col>
+							</Row>
+						)}
 					</Container>
 				</form>
 				<div className='chart' ref={chartRef}>
