@@ -4,6 +4,7 @@
 	"homepage": "https://rahasovellus.netlify.app",
 	"private": true,
 	"dependencies": {
+		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
 		"@fortawesome/fontawesome-svg-core": "^1.2.35",
 		"@fortawesome/free-solid-svg-icons": "^5.15.3",
 		"@fortawesome/react-fontawesome": "^0.2.0",
@@ -58,7 +59,6 @@
 		]
 	},
 	"devDependencies": {
-		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
 		"prettier": "3.0.0"
 	},
 	"overrides": {

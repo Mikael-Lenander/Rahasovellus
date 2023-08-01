@@ -66,7 +66,9 @@ app.use('/api/transaction', isAuthenticated, transactionRouters)
 app.use('/api/user', isAuthenticated, userRouters)
 
 app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname + '/build/index.html'))
+	const staticPath = path.join(path.dirname(__dirname), 'build/index.html')
+	console.log('staticPath', staticPath)
+	res.sendFile(staticPath)
 })
 
 app.listen(PORT, () => {
