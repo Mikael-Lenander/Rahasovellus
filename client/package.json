@@ -15,7 +15,6 @@
 		"chartjs-adapter-date-fns": "^3.0.0",
 		"chartjs-adapter-dayjs-4": "^1.0.4",
 		"csv-parser": "^3.0.0",
-		"d3": "^6.7.0",
 		"date-fns": "^2.30.0",
 		"dayjs": "^1.11.9",
 		"jquery": "^3.6.0",

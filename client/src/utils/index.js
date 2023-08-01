@@ -33,3 +33,10 @@ export function extractRGBValues(rgbString) {
 export function capitalize(str) {
 	return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
 }
+
+export function asEuros(number) {
+	return number.toLocaleString('fi-FI', {
+		style: 'currency',
+		currency: 'EUR'
+	})
+}
