@@ -10,7 +10,7 @@ import Register from '../Register/Register'
 import Dashboard from '../Dashboard/Dashboard'
 import Charts from '../Charts/Charts'
 import Profile from '../Profile/Profile'
-import Header from '../Shared/Header/Header'
+import Navbar from '../Shared/Navbar/Navbar'
 import PrivateRoute from '../Routes/PrivateRoute'
 import PublicRoute from '../Routes/PublicRoute'
 // import Footer from '../Footer/Footer'
@@ -33,7 +33,7 @@ function App() {
 		<>
 			{fetching ? (
 				<>
-					<Header />
+					<Navbar />
 					<LoadingScreen classes='flex-center background' size='6x' />
 				</>
 			) : (

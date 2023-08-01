@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import Header from '../Shared/Header/Header'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
 import ProfileTransactions from './ProfileTransactions/ProfileTransactions'
 import { useDispatch } from 'react-redux'
@@ -16,14 +15,9 @@ export default function Profile() {
 	}, [dispatch])
 
 	return (
-		<>
-			<Header
-				links={[{ path: '/charts', text: 'Charts' }, { path: '/dashboard', text: 'Dashboard' }, { path: '/profile', text: 'Profile' }, { logout: true }]}
-			/>
-			<main className='profile-grid'>
-				<ProfileInfo />
-				<ProfileTransactions />
-			</main>
-		</>
+		<main className='profile-grid'>
+			<ProfileInfo />
+			<ProfileTransactions />
+		</main>
 	)
 }

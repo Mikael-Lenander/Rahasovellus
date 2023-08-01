@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import getLoginMessage from '../../actions/getLoginMessage'
 import getUser from '../../actions/getUser'
 import { CLEAR_REGISTER_MESSAGES, CLEAR_LOGIN_MESSAGE } from '../../constants/actionTypes'
-import Header from '../Shared/Header/Header'
+import Navbar from '../Shared/Navbar/Navbar'
 
 export default function Login() {
 	const [username, setUsername] = useState('')
@@ -31,7 +31,7 @@ export default function Login() {
 
 	return (
 		<>
-			<Header
+			<Navbar
 				homeLink={{ onClick: clearMessages }}
 				links={[
 					{ path: '/login', text: 'Login' },

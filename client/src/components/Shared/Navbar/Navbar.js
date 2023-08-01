@@ -2,16 +2,16 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import logoutUser from '../../../actions/logoutUser'
 import { useDispatch } from 'react-redux'
-import Navbar from 'react-bootstrap/Navbar'
+import BNavbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import './Header.css'
+import './Navbar.css'
 
-export default function Header({ homeLink, links = [] }) {
+export default function Navbar({ homeLink, links = [] }) {
 	const dispatch = useDispatch()
 
 	return (
-		<Navbar fixed='top' expand='md' bg='dark' variant='dark' className='header flex-header'>
-			<Navbar.Brand className='logo' style={{ color: 'white' }}>
+		<BNavbar fixed='top' expand='md' bg='dark' variant='dark' className='header flex-header'>
+			<BNavbar.Brand className='logo' style={{ color: 'white' }}>
 				{homeLink ? (
 					<Link {...homeLink} to='/' className='hidden-link' key='homelink'>
 						FinanceTracker
@@ -19,9 +19,9 @@ export default function Header({ homeLink, links = [] }) {
 				) : (
 					<>FinanceTracker</>
 				)}
-			</Navbar.Brand>
-			<Navbar.Toggle aria-controls='responsive-navbar-nav' />
-			<Navbar.Collapse id='responsive-nav bar-nav' className='links'>
+			</BNavbar.Brand>
+			<BNavbar.Toggle aria-controls='responsive-navbar-nav' />
+			<BNavbar.Collapse id='responsive-nav bar-nav' className='links'>
 				<Nav className='nav'>
 					{links.map(({ path, text, logout, ...rest }) =>
 						!logout ? (
@@ -44,7 +44,7 @@ export default function Header({ homeLink, links = [] }) {
 						)
 					)}
 				</Nav>
-			</Navbar.Collapse>
-		</Navbar>
+			</BNavbar.Collapse>
+		</BNavbar>
 	)
 }

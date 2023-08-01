@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import getRegisterMessages from '../../actions/getRegisterMessages'
 import { CLEAR_REGISTER_MESSAGES } from '../../constants/actionTypes'
-import Header from '../Shared/Header/Header'
+import Navbar from '../Shared/Navbar/Navbar'
 
 export default function Register(props) {
 	const [username, setUsername] = useState('')
@@ -24,7 +24,7 @@ export default function Register(props) {
 
 	return (
 		<>
-			<Header
+			<Navbar
 				homeLink={true}
 				links={[
 					{ path: '/login', text: 'Login' },

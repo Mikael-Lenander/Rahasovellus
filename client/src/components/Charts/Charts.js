@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import Header from '../Shared/Header/Header'
 import NetWorthChart from './ChartComponents/NetWorthChart'
 import MontlyTotalBarChart from './ChartComponents/MonthlyTotalBarChart'
 import CategoryBarChart from './ChartComponents/CategoryBarChart'
@@ -110,57 +109,52 @@ export default function Charts() {
 	const fetchingUser = useSelector(state => state.user.fetching)
 	const fetching = fetchingTransactions || fetchingUser || chartSize == null
 	return (
-		<>
-			<Header
-				links={[{ path: '/charts', text: 'Charts' }, { path: '/dashboard', text: 'Dashboard' }, { path: '/profile', text: 'Profile' }, { logout: true }]}
-			></Header>
-			<main className='chart-container'>
-				<form>
-					<Container>
+		<main className='chart-container'>
+			<form>
+				<Container>
+					<Row className='chart-row'>
+						<Col className='chart-form-item' lg={4} md={6}>
+							<label htmlFor='startDate' className='form-label'>
+								From
+							</label>
+							<DateField
+								id='startDate'
+								minDate={new Date(oldestTransactionDate)}
+								maxDate={state.endDate}
+								value={state.startDate}
+								mode={dateModes[state.chart]}
+								onChange={setInput}
+							/>
+						</Col>
+						<Col className='chart-form-item' lg={4} md={6}>
+							<label htmlFor='endDate' className='form-label'>
+								To
+							</label>
+							<DateField id='endDate' minDate={state.startDate} value={state.endDate} mode={dateModes[state.chart]} onChange={setInput} />
+						</Col>
+						<Col className='chart-form-item' lg={4} md={12}>
+							<label htmlFor='type' className='form-label'>
+								Chart
+							</label>
+							<SelectField id='chart' values={Object.values(CHARTS)} value={state.chart} onChange={setInput} />
+						</Col>
+					</Row>
+					{state.options.length > 0 && (
 						<Row className='chart-row'>
-							<Col className='chart-form-item' lg={4} md={6}>
-								<label htmlFor='startDate' className='form-label'>
-									From
-								</label>
-								<DateField
-									id='startDate'
-									minDate={new Date(oldestTransactionDate)}
-									maxDate={state.endDate}
-									value={state.startDate}
-									mode={dateModes[state.chart]}
-									onChange={setInput}
-								/>
-							</Col>
-							<Col className='chart-form-item' lg={4} md={6}>
-								<label htmlFor='endDate' className='form-label'>
-									To
-								</label>
-								<DateField id='endDate' minDate={state.startDate} value={state.endDate} mode={dateModes[state.chart]} onChange={setInput} />
-							</Col>
-							<Col className='chart-form-item' lg={4} md={12}>
-								<label htmlFor='type' className='form-label'>
-									Chart
-								</label>
-								<SelectField id='chart' values={Object.values(CHARTS)} value={state.chart} onChange={setInput} />
+							<Col className='chart-form-item'>
+								<CheckboxGroup id='options' values={state.options} onChange={setCheckboxGroup} />
 							</Col>
 						</Row>
-						{state.options.length > 0 && (
-							<Row className='chart-row'>
-								<Col className='chart-form-item'>
-									<CheckboxGroup id='options' values={state.options} onChange={setCheckboxGroup} />
-								</Col>
-							</Row>
-						)}
-					</Container>
-				</form>
-				<div className='chart' ref={chartRef}>
-					{fetching ? (
-						<LoadingScreen style={{ color: 'black', width: 60, height: 60 }} containerStyle={{ width: '100%', height: '100%' }} classes='flex-center' />
-					) : (
-						drawChart()
 					)}
-				</div>
-			</main>
-		</>
+				</Container>
+			</form>
+			<div className='chart' ref={chartRef}>
+				{fetching ? (
+					<LoadingScreen style={{ color: 'black', width: 60, height: 60 }} containerStyle={{ width: '100%', height: '100%' }} classes='flex-center' />
+				) : (
+					drawChart()
+				)}
+			</div>
+		</main>
 	)
 }

@@ -1,11 +1,11 @@
 import React from 'react'
-import Header from '../Shared/Header/Header'
+import Navbar from '../Shared/Navbar/Navbar'
 import './Home.css'
 
 export default function Home() {
 	return (
 		<>
-			<Header
+			<Navbar
 				links={[
 					{ path: '/login', text: 'Login' },
 					{ path: '/register', text: 'Register' }
