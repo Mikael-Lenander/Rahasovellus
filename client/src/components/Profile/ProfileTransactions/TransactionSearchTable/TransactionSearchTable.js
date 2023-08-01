@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux'
 import LoadingScreen from '../../../Shared/LoadingScreen/LoadingScreen'
 import Table from '../../../Shared/Table/Table'
 
-export default function TransactionSearchTable({ transactions }) {
+export default function TransactionSearchTable({ transactions, isPending }) {
 	const fetching = useSelector(state => state.transactions.fetching)
 
 	return (
 		<>
-			{fetching ? (
+			{fetching || isPending ? (
 				<LoadingScreen style={{ color: 'black', width: 60, height: 60 }} classes='flex-center transaction-search-table' />
 			) : transactions.length > 0 ? (
 				<div className='transaction-search-table'>

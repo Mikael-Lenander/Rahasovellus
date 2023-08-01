@@ -1,34 +1,60 @@
-import React, { useState } from 'react'
+import React, { useEffect, useTransition, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import './ProfileTransactions.css'
 import TransactionSearchTable from './TransactionSearchTable/TransactionSearchTable'
 import dayjs from 'dayjs'
-import DatePicker from 'react-datepicker'
+import { useForm } from '../../../hooks/useForm'
+import { Field, SelectField, DateField } from '../../Shared/Form/formFields'
 
 export default function ProfileTransactions() {
 	const transactions = useSelector(state => state.transactions.data)
-	let categoryTypes = useSelector(state => state.user.data.categories)
-	categoryTypes = {
-		income: ['Any', ...categoryTypes.income],
-		expense: ['Any', ...categoryTypes.expense]
-	}
-	const [selectedCategoryType, setSelectedCategoryType] = useState('any')
-	const [categories, setCategories] = useState(['Any'])
-	const [category, setCategory] = useState(categories[0])
-	const [minDate, setMinDate] = useState()
-	const [maxDate, setMaxDate] = useState()
-	const [minAmount, setMinAmount] = useState(0)
-	const [maxAmount, setMaxAmount] = useState('')
+	const categoryTypes = useSelector(state => state.user.data.categories)
+	const [isPending, startTransition] = useTransition()
+	const { setInput, state } = useForm({
+		categoryType: 'any',
+		category: 'any',
+		minAmount: 0,
+		maxAmount: '',
+		minDate: '',
+		maxDate: new Date(),
+		transactions: transactions
+	})
+	const categories = useMemo(() => {
+		const categoryTypesWithAny = {
+			any: ['any'],
+			income: ['any', ...categoryTypes.income],
+			expense: ['any', ...categoryTypes.expense]
+		}
+		return categoryTypesWithAny[state.categoryType]
+	}, [state.categoryType, categoryTypes])
 
-	function search({ minAmount = 0, maxAmount = Infinity, minDate = -Infinity, maxDate = Infinity, type = 'any', category = 'Any' }) {
+	function search({ id, value }={}) {
+		const defaults = {
+			minAmount: 0,
+			maxAmount: Infinity,
+			minDate: new Date(0),
+			maxDate: new Date(8640000000000000),
+			categoryType: 'any',
+			category: 'any'
+		}
+		const values = { ...state, [id]: value }
+		for (const key in values) {
+			if (values[key] === '' || values[key] == null) {
+				values[key] = defaults[key]
+			}
+			if (id === 'categoryType') {
+				values.category = categories[0]
+			}
+		}
+		const { minAmount, maxAmount, minDate, maxDate, categoryType, category } = values
 		const filteredTransactions = transactions.filter(transaction => {
-			if (new Date(transaction.date) < new Date(minDate) || new Date(transaction.date) >= dayjs(maxDate).add(1, 'day')) {
+			if (dayjs(transaction.date).isBefore(minDate, 'day') || dayjs(transaction.date).isAfter(maxDate, 'day')) {
 				return false
 			} else if (transaction.amount < minAmount || transaction.amount > maxAmount) {
 				return false
-			} else if (type !== 'any' && transaction.type !== type) {
+			} else if (categoryType !== 'any' && transaction.type !== categoryType) {
 				return false
-			} else if (category !== 'Any' && transaction.category !== category) {
+			} else if (category !== 'any' && transaction.category !== category) {
 				return false
 			}
 			return true
@@ -36,12 +62,22 @@ export default function ProfileTransactions() {
 		return filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date))
 	}
 
-	function onChangeDropDown(event) {
-		const value = event.target.value
-		setSelectedCategoryType(value)
-		setCategories(value === 'income' ? categoryTypes.income : value === 'expense' ? categoryTypes.expense : ['Any'])
-		setCategory(value === 'income' ? categoryTypes.income[0] : value === 'expense' ? categoryTypes.expense[0] : 'Any')
+	function onChange(id, value) {
+		setInput(id, value)
+		startTransition(() => {
+			setInput('transactions', search({ id, value }))
+		})
 	}
+
+	useEffect(() => {
+		setInput('category', categories[0])
+	}, [state.categoryType, categories, setInput])
+
+	useEffect(() => {
+		startTransition(() => {
+			setInput('transactions', search())
+		})
+	}, [transactions, setInput]) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<div className='profile-section profile-transactions'>
@@ -50,92 +86,45 @@ export default function ProfileTransactions() {
 				<form>
 					<div className='search-form'>
 						<div className='search-form-item'>
-							<label htmlFor='min-amount' style={{ margin: 0 }}>
+							<label htmlFor='minAmount' style={{ margin: 0 }}>
 								Min amount
 							</label>
-							<input
-								id='min-amount'
-								type='number'
-								className='form-control text-input'
-								min='0'
-								step='0.01'
-								value={minAmount}
-								onChange={e => setMinAmount(e.target.value)}
-							/>
+							<Field id='minAmount' type='number' min={0} step='0.01' value={state.minAmount} onChange={onChange} />
 						</div>
 						<div className='search-form-item'>
-							<label htmlFor='max-amount' style={{ margin: 0 }}>
+							<label htmlFor='maxAmount' style={{ margin: 0 }}>
 								Max amount
 							</label>
-							<input
-								id='max-amount'
-								type='number'
-								className='form-control text-input'
-								min={minAmount.toString()}
-								step='0.01'
-								value={maxAmount}
-								onChange={e => setMaxAmount(e.target.value)}
-							/>
+							<Field id='maxAmount' type='number' min={state.minAmount} step='0.01' value={state.maxAmount} onChange={onChange} />
 						</div>
 						<div className='search-form-item'>
-							<label htmlFor='from' style={{ margin: 0 }}>
+							<label htmlFor='minDate' style={{ margin: 0 }}>
 								From
 							</label>
-							<DatePicker
-								className='form-control text-input'
-								selected={minDate}
-								onChange={date => setMinDate(date)}
-								dateFormat='dd/MM/yyyy'
-								maxDate={maxDate}
-							/>
+							<DateField id='minDate' value={state.minDate} max={state.maxDate} onChange={onChange} />
 						</div>
 						<div className='search-form-item'>
-							<label htmlFor='to' style={{ margin: 0 }}>
+							<label htmlFor='maxDate' style={{ margin: 0 }}>
 								To
 							</label>
-							<DatePicker
-								className='form-control text-input'
-								selected={maxDate}
-								onChange={date => setMaxDate(date)}
-								dateFormat='dd/MM/yyyy'
-								minDate={minDate}
-							/>
+							<DateField id='maxDate' value={state.maxDate} min={state.minDate} onChange={onChange} />
 						</div>
 						<div className='search-form-item'>
-							<label htmlFor='type' style={{ margin: 0 }}>
+							<label htmlFor='categoryType' style={{ margin: 0 }}>
 								Type
 							</label>
-							<select className='form-control text-input' value={selectedCategoryType} onChange={onChangeDropDown}>
-								<option value='any'>Any</option>
-								<option value='income'>Income</option>
-								<option value='expense'>Expense</option>
-							</select>
+							<SelectField id='categoryType' value={state.categoryType} onChange={onChange} values={['any', 'income', 'expense']} />
 						</div>
 						<div className='search-form-item'>
 							<label htmlFor='category' style={{ margin: 0 }}>
 								Category
 							</label>
-							<select className='form-control text-input' value={category} onChange={e => setCategory(e.target.value)}>
-								{categories.map(item => (
-									<option key={item} value={item}>
-										{item}
-									</option>
-								))}
-							</select>
+							<SelectField id='category' value={state.category} onChange={onChange} values={categories} />
 						</div>
 					</div>
 				</form>
 			</div>
-			<TransactionSearchTable
-				transactions={search({
-					minAmount: minAmount || -Infinity,
-					maxAmount: maxAmount || Infinity,
-					minDate: minDate,
-					maxDate: maxDate,
-					type: selectedCategoryType,
-					category: category
-				})}
-			/>
+			<TransactionSearchTable transactions={state.transactions} isPending={isPending} />
 		</div>
 	)
 }
