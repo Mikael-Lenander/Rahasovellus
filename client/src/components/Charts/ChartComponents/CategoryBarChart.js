@@ -1,9 +1,10 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2'
-import { titleOptions, tooltipOptions } from '../chartOptions'
+import { titleOptions, tooltipOptions, commonOptions } from '../../../utils/chartOptions'
+import { CustomColorScale } from '../../../utils/chartjsPlugins'
 
 export default function CategoryBarChart({ dataset: data, title, size, color, showTotal }) {
-  const dataset = showTotal ? data : data.slice(0, -1)
+	const dataset = showTotal ? data : data.slice(0, -1)
 	return (
 		<Bar
 			data={{
@@ -16,23 +17,22 @@ export default function CategoryBarChart({ dataset: data, title, size, color, sh
 				]
 			}}
 			options={{
-				responsive: true,
+				...commonOptions(size),
 				scales: {
 					y: {
 						beginAtZero: true
 					}
 				},
-				aspectRatio: size.width / size.height,
 				plugins: {
 					title: titleOptions(title),
 					tooltip: tooltipOptions,
 					customColorScale: {
-            color: color,
-            colorRange: 0.3
-          }
-				},
-				locale: 'fi-FI'
+						color: color,
+						colorRange: 0.3
+					}
+				}
 			}}
+			plugins={[CustomColorScale]}
 		/>
 	)
 }

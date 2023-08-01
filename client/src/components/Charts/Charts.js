@@ -10,13 +10,13 @@ import TransactionCalculator from '../../utils/TransactionCalculator'
 import useResizeObserver from '../../hooks/useResizeObserver'
 import dayjs from 'dayjs'
 import './Charts.css'
-import { Chart as ChartJS, CategoryScale, LinearScale, Title, Tooltip, TimeScale, PointElement, LineElement, Filler, BarElement } from 'chart.js'
-import { CustomColorScale } from '../../utils/chartjsPlugins'
+import { Chart as ChartJS, CategoryScale, LinearScale, TimeScale, Title, Tooltip, PointElement, LineElement, Filler, BarElement } from 'chart.js'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import { CHART_COLORS } from '../../utils/chartOptions'
 
-ChartJS.register(CategoryScale, LinearScale, Title, Tooltip, TimeScale, PointElement, LineElement, Filler, BarElement, CustomColorScale)
+ChartJS.register(CategoryScale, LinearScale, TimeScale, Title, Tooltip, PointElement, LineElement, Filler, BarElement)
 ChartJS.defaults.color = 'black'
 
 const CHARTS = {
@@ -32,12 +32,6 @@ const dateModes = {
 	[CHARTS.MONTHLY_INCOME]: 'month',
 	[CHARTS.INCOME_MEANS]: 'month',
 	[CHARTS.EXPENSE_MEANS]: 'month'
-}
-export const COLORS = {
-	RED: 'rgb(166, 70, 65)',
-	GREEN: 'rgb(41, 133, 47)',
-	LIGHT_GREEN: 'rgb(41, 133, 47, 0.5)',
-	LIGHT_RED: 'rgb(166, 70, 65, 0.5)'
 }
 const showTotalCheckbox = [{ name: 'Show total', checked: false }]
 

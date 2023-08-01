@@ -1,14 +1,13 @@
 import { Line } from 'react-chartjs-2'
-import { COLORS } from '../Charts'
+import { CHART_COLORS } from '../../../utils/chartOptions'
 import 'chartjs-adapter-date-fns'
 import { fi } from 'date-fns/locale'
-import { tooltipOptions, titleOptions } from '../chartOptions'
+import { tooltipOptions, titleOptions, commonOptions } from '../../../utils/chartOptions'
 
 export default function NetWorthChart({ dataset, size }) {
-
 	const lineColors = context => {
 		const dataset = context.chart.data.datasets[0].data
-		return dataset.map(value => (value >= 0 ? COLORS.GREEN : COLORS.RED))
+		return dataset.map(value => (value >= 0 ? CHART_COLORS.GREEN : CHART_COLORS.RED))
 	}
 	const lineColor = dataset.length < 30 ? lineColors : 'rgba(0, 0, 0, 0)'
 
@@ -20,8 +19,8 @@ export default function NetWorthChart({ dataset, size }) {
 					{
 						fill: {
 							target: 'origin',
-							above: COLORS.LIGHT_GREEN,
-							below: COLORS.LIGHT_RED
+							above: CHART_COLORS.LIGHT_GREEN,
+							below: CHART_COLORS.LIGHT_RED
 						},
 						label: 'Net worth',
 						data: dataset.map(obj => obj.capital),
@@ -34,8 +33,8 @@ export default function NetWorthChart({ dataset, size }) {
 							const positiveAreaHeight = scales.y.getPixelForValue(0) - chartArea.top
 							const positiveAreaPercentage = positiveAreaHeight / chartHeight
 							const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartHeight + chartArea.top)
-							gradient.addColorStop(positiveAreaPercentage, COLORS.GREEN)
-							gradient.addColorStop(positiveAreaPercentage, COLORS.RED)
+							gradient.addColorStop(positiveAreaPercentage, CHART_COLORS.GREEN)
+							gradient.addColorStop(positiveAreaPercentage, CHART_COLORS.RED)
 							return gradient
 						},
 						backgroundColor: 'black',
@@ -48,7 +47,7 @@ export default function NetWorthChart({ dataset, size }) {
 				]
 			}}
 			options={{
-				responsive: true,
+				...commonOptions(size),
 				scales: {
 					y: {
 						beginAtZero: true
@@ -65,11 +64,9 @@ export default function NetWorthChart({ dataset, size }) {
 						}
 					}
 				},
-				aspectRatio: size.width / size.height,
 				plugins: {
 					title: titleOptions('Net worth'),
-					tooltip: tooltipOptions,
-					customColorScale: false
+					tooltip: tooltipOptions
 				}
 			}}
 		/>
