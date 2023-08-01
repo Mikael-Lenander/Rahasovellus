@@ -119,7 +119,7 @@ export default function Charts() {
 					<Container>
 						<Row className='chart-row'>
 							<Col className='chart-form-item' lg={4} md={6}>
-								<label htmlFor='startDate' style={{ margin: 0 }}>
+								<label htmlFor='startDate' className='form-label'>
 									From
 								</label>
 								<DateField
@@ -132,13 +132,13 @@ export default function Charts() {
 								/>
 							</Col>
 							<Col className='chart-form-item' lg={4} md={6}>
-								<label htmlFor='endDate' style={{ margin: 0 }}>
+								<label htmlFor='endDate' className='form-label'>
 									To
 								</label>
 								<DateField id='endDate' minDate={state.startDate} value={state.endDate} mode={dateModes[state.chart]} onChange={setInput} />
 							</Col>
 							<Col className='chart-form-item' lg={4} md={12}>
-								<label htmlFor='type' style={{ margin: 0 }}>
+								<label htmlFor='type' className='form-label'>
 									Chart
 								</label>
 								<SelectField id='chart' values={Object.values(CHARTS)} value={state.chart} onChange={setInput} />

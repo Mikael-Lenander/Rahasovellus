@@ -48,6 +48,10 @@
 	margin-top: 20px;
 }
 
+.form-label {
+	margin: 0;
+}
+
 #bootstrap-overrides .form-submit {
 	background: rgba(8, 8, 180, 1);
 	color: white;

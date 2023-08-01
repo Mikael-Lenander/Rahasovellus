@@ -28,7 +28,7 @@ export default function ProfileTransactions() {
 		return categoryTypesWithAny[state.categoryType]
 	}, [state.categoryType, categoryTypes])
 
-	function search({ id, value }={}) {
+	function search({ id, value } = {}) {
 		const defaults = {
 			minAmount: 0,
 			maxAmount: Infinity,
@@ -86,37 +86,37 @@ export default function ProfileTransactions() {
 				<form>
 					<div className='search-form'>
 						<div className='search-form-item'>
-							<label htmlFor='minAmount' style={{ margin: 0 }}>
+							<label htmlFor='minAmount' className='form-label'>
 								Min amount
 							</label>
 							<Field id='minAmount' type='number' min={0} step='0.01' value={state.minAmount} onChange={onChange} />
 						</div>
 						<div className='search-form-item'>
-							<label htmlFor='maxAmount' style={{ margin: 0 }}>
+							<label htmlFor='maxAmount' className='form-label'>
 								Max amount
 							</label>
 							<Field id='maxAmount' type='number' min={state.minAmount} step='0.01' value={state.maxAmount} onChange={onChange} />
 						</div>
 						<div className='search-form-item'>
-							<label htmlFor='minDate' style={{ margin: 0 }}>
+							<label htmlFor='minDate' className='form-label'>
 								From
 							</label>
 							<DateField id='minDate' value={state.minDate} max={state.maxDate} onChange={onChange} />
 						</div>
 						<div className='search-form-item'>
-							<label htmlFor='maxDate' style={{ margin: 0 }}>
+							<label htmlFor='maxDate' className='form-label'>
 								To
 							</label>
 							<DateField id='maxDate' value={state.maxDate} min={state.minDate} onChange={onChange} />
 						</div>
 						<div className='search-form-item'>
-							<label htmlFor='categoryType' style={{ margin: 0 }}>
+							<label htmlFor='categoryType' className='form-label'>
 								Type
 							</label>
 							<SelectField id='categoryType' value={state.categoryType} onChange={onChange} values={['any', 'income', 'expense']} />
 						</div>
 						<div className='search-form-item'>
-							<label htmlFor='category' style={{ margin: 0 }}>
+							<label htmlFor='category' className='form-label'>
 								Category
 							</label>
 							<SelectField id='category' value={state.category} onChange={onChange} values={categories} />

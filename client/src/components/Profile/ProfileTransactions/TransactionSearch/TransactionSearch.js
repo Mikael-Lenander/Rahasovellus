@@ -40,7 +40,7 @@ export default function TransactionSearch({ search }) {
 			<form>
 				<div className='search-form'>
 					<div style={{ margin: '0px 5px 0px 5px' }}>
-						<label htmlFor='min-amount' style={{ margin: 0 }}>
+						<label htmlFor='min-amount' className='form-label'>
 							Min amount
 						</label>
 						<input
@@ -54,7 +54,7 @@ export default function TransactionSearch({ search }) {
 						/>
 					</div>
 					<div style={{ margin: '0px 5px 0px 5px' }}>
-						<label htmlFor='max-amount' style={{ margin: 0 }}>
+						<label htmlFor='max-amount' className='form-label'>
 							Max amount
 						</label>
 						<input
@@ -68,19 +68,19 @@ export default function TransactionSearch({ search }) {
 						/>
 					</div>
 					<div style={{ margin: '0px 5px 0px 5px' }}>
-						<label htmlFor='from' style={{ margin: 0 }}>
+						<label htmlFor='from' className='form-label'>
 							From
 						</label>
 						<DatePicker className='form-control text-input' selected={minDate} onChange={date => setMinDate(date)} dateFormat='dd/MM/yyyy' />
 					</div>
 					<div style={{ margin: '0px 5px 0px 5px' }}>
-						<label htmlFor='to' style={{ margin: 0 }}>
+						<label htmlFor='to' className='form-label'>
 							To
 						</label>
 						<DatePicker className='form-control text-input' selected={maxDate} onChange={date => setMaxDate(date)} dateFormat='dd/MM/yyyy' />
 					</div>
 					<div style={{ margin: '0px 5px 0px 5px' }}>
-						<label htmlFor='type' style={{ margin: 0 }}>
+						<label htmlFor='type' className='form-label'>
 							Type
 						</label>
 						<select className='form-control text-input' value={selectedCategoryType} onChange={onChangeDropDown}>
@@ -90,7 +90,7 @@ export default function TransactionSearch({ search }) {
 						</select>
 					</div>
 					<div style={{ margin: '0px 5px 0px 5px' }}>
-						<label htmlFor='category' style={{ margin: 0 }}>
+						<label htmlFor='category' className='form-label'>
 							Category
 						</label>
 						<select className='form-control text-input' value={category} onChange={e => setCategory(e.target.value)}>
