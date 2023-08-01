@@ -65,8 +65,8 @@ router.delete('/delete/:id', async (req, res) => {
 		const deletedTransaction = await Transaction.findOneAndDelete({ _id: id })
 		if (dayjs(oldestTransactionDate).isSame(dayjs(deletedTransaction.date))) {
 			const oldestTransaction = await Transaction.find({ userId: userId }).sort({ date: 1 }).limit(1)
-			oldestTransactionDate = oldestTransaction[0]?.date || new Date(100000000000000)
-			await User.findByIdAndUpdate(userId, { $set: { oldestTransactionDate: new Date(oldestTransactionDate) } }, { useFindAndModify: false })
+			oldestTransactionDate = oldestTransaction[0]?.date || null
+			await User.findByIdAndUpdate(userId, { $set: { oldestTransactionDate: oldestTransactionDate } }, { useFindAndModify: false })
 		}
 		console.log('Transaction deleted')
 		res.send({
@@ -79,7 +79,7 @@ router.delete('/delete/:id', async (req, res) => {
 })
 
 async function updateOldestTransactionDate(date, oldestTransactionDate, userId) {
-	if (new Date(date) < new Date(oldestTransactionDate)) {
+	if (oldestTransactionDate == null || new Date(date) < new Date(oldestTransactionDate)) {
 		await User.findByIdAndUpdate(userId, { $set: { oldestTransactionDate: new Date(date) } }, { useFindAndModify: false })
 		return date
 	}

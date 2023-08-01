@@ -29,8 +29,7 @@ const userSchema = new mongoose.Schema({
 		default: new Date()
 	},
 	oldestTransactionDate: {
-		type: Date,
-		default: new Date(100000000000000)
+		type: Date
 	}
 })
 

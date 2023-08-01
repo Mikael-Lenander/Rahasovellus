@@ -43,7 +43,7 @@ export default function Charts() {
 	const datasetGenerator = new TransactionCalculator(transactions, initCapital)
 	const { state, setInput, setCheckboxGroup } = useForm({
 		startDate: new Date(oldestTransactionDate),
-		endDate: new Date(),
+		endDate: Math.max(new Date(), new Date(oldestTransactionDate)),
 		chart: CHARTS.NET_WORTH,
 		options: []
 	})
