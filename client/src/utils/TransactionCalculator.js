@@ -9,18 +9,19 @@ export default class TransactionCalculator {
 
 	monthlyCategories(type) {
 		const currentMonth = dayjs().startOf('month')
-		return this.transactions.reduce((obj, transaction) => {
+		const categoryObj = this.transactions.reduce((obj, transaction) => {
 			if (transaction.type !== type) return obj
 			if (!currentMonth.isSame(dayjs(transaction.date), 'month')) return obj
 			if (!obj.hasOwnProperty(transaction.category)) obj[transaction.category] = 0
 			obj[transaction.category] += transaction.amount
 			return obj
 		}, {})
+		return Object.keys(categoryObj).map(category => ({ category, amount: categoryObj[category] }))
 	}
 
-	monthlyBalances({ startDate, endDate, months, excludedCategories = [] }) {
+	monthlyBalances({ startDate, endDate, months, excludedCategories = [], wholeRange = false }) {
 		if (months) {
-			startDate = dayjs().subtract(months, 'month')
+			startDate = dayjs().subtract(months - 1, 'month')
 			endDate = dayjs()
 		}
 		const balances = this.transactions.reduce((obj, transaction) => {
@@ -34,7 +35,13 @@ export default class TransactionCalculator {
 			obj[dateString][transaction.type] += transaction.amount
 			return obj
 		}, {})
-		return sortedByDate(Object.values(balances))
+		const dates = Object.values(balances).map(obj => obj.date)
+		const range = wholeRange ? monthRange(startDate, endDate) : monthRange(Math.min(...dates), Math.max(...dates))
+		return range.map(date => {
+			const dateString = date.format('M/YYYY')
+			if (dateString in balances) return balances[dateString]
+			return { date, income: 0, expense: 0 }
+		})
 	}
 
 	means(startDate, endDate, type) {
@@ -44,7 +51,7 @@ export default class TransactionCalculator {
 			if (date.isBefore(startDate, 'month') || date.isAfter(endDate, 'month')) return obj
 			if (transaction.type !== type) return obj
 			if (!(transaction.category in obj)) {
-				obj[transaction.category] = monthRange(startDate, endDate).reduce((obj, month) => ({ ...obj, [month]: 0 }), {})
+				obj[transaction.category] = monthRange(startDate, endDate, 'M/YYYY').reduce((obj, month) => ({ ...obj, [month]: 0 }), {})
 			}
 			obj[transaction.category][dateString] += transaction.amount
 			return obj
@@ -130,11 +137,12 @@ function amount(transaction) {
 	return transaction.amount * (transaction.type === 'income' ? 1 : -1)
 }
 
-function monthRange(startDate, endDate) {
+function monthRange(startDate, endDate, format) {
 	const months = []
-	let currentMonth = dayjs(startDate)
+	let currentMonth = dayjs(startDate).startOf('month')
 	while (currentMonth.isBefore(endDate, 'month') || currentMonth.isSame(endDate, 'month')) {
-		months.push(currentMonth.format('M/YYYY'))
+		const month = format ? currentMonth.format(format) : currentMonth
+		months.push(month)
 		currentMonth = currentMonth.add(1, 'month')
 	}
 	return months

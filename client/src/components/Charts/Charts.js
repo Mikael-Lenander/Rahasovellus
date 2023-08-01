@@ -78,22 +78,22 @@ export default function Charts() {
 				return <NetWorthChart dataset={dataset} size={chartSize} />
 			case CHARTS.MONTHLY_EXPENSES:
 				excludedCategories = state.options.filter(option => !option.checked).map(option => option.name)
-				maxBalance = datasetGenerator.maxMonthlyBalances({ startDate: startDateString, endDate: endDateString }).expense
+				maxBalance = datasetGenerator.maxMonthlyBalances({ startDate: startDateString, endDate: endDateString, wholeRange: true }).expense
 				dataset = datasetGenerator.monthlyBalances({ startDate: startDateString, endDate: endDateString, excludedCategories: excludedCategories })
-				return <MontlyTotalBarChart dataset={dataset} size={chartSize} title='Monthly Expenses' type='expense' color={COLORS.RED} yMax={maxBalance} />
+				return <MontlyTotalBarChart dataset={dataset} size={chartSize} title='Monthly Expenses' type='expense' color={CHART_COLORS.RED} yMax={maxBalance} />
 			case CHARTS.MONTHLY_INCOME:
 				excludedCategories = state.options.filter(option => !option.checked).map(option => option.name)
-				maxBalance = datasetGenerator.maxMonthlyBalances({ startDate: startDateString, endDate: endDateString }).income
+				maxBalance = datasetGenerator.maxMonthlyBalances({ startDate: startDateString, endDate: endDateString, wholeRange: true }).income
 				dataset = datasetGenerator.monthlyBalances({ startDate: startDateString, endDate: endDateString, excludedCategories: excludedCategories })
-				return <MontlyTotalBarChart dataset={dataset} size={chartSize} title='Monthly Income' type='income' color={COLORS.GREEN} yMax={maxBalance} />
+				return <MontlyTotalBarChart dataset={dataset} size={chartSize} title='Monthly Income' type='income' color={CHART_COLORS.GREEN} yMax={maxBalance} />
 			case CHARTS.INCOME_MEANS:
 				showTotal = state.options.find(option => option.name === 'Show total')?.checked
 				dataset = datasetGenerator.means(startDateString, endDateString, 'income')
-				return <CategoryBarChart dataset={dataset} size={chartSize} title='Mean monthly income' color={COLORS.GREEN} showTotal={showTotal} />
+				return <CategoryBarChart dataset={dataset} size={chartSize} title='Mean monthly income' color={CHART_COLORS.GREEN} showTotal={showTotal} />
 			case CHARTS.EXPENSE_MEANS:
 				showTotal = state.options.find(option => option.name === 'Show total')?.checked
 				dataset = datasetGenerator.means(startDateString, endDateString, 'expense')
-				return <CategoryBarChart dataset={dataset} size={chartSize} title='Mean monthly expences' color={COLORS.RED} showTotal={showTotal} />
+				return <CategoryBarChart dataset={dataset} size={chartSize} title='Mean monthly expences' color={CHART_COLORS.RED} showTotal={showTotal} />
 			default:
 				throw new Error('Invalid chart type')
 		}
