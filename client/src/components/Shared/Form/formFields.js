@@ -1,6 +1,7 @@
 import React from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { capitalize } from '../../../utils'
 
 export function Field({ id, type, value, onChange, ...props }) {
 	return <input id={id} type={type} value={value} onChange={e => onChange(id, e.target.value)} className='form-control text-input' {...props} />
@@ -11,7 +12,7 @@ export function SelectField({ id, value, onChange, values, ...props }) {
 		<select className='form-control text-input' id={id} value={value} onChange={e => onChange(id, e.target.value)} {...props}>
 			{values.map(item => (
 				<option key={item} value={item}>
-					{item}
+					{capitalize(item)}
 				</option>
 			))}
 		</select>
