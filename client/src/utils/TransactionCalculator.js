@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { sortedByDate } from './index'
+import { sortByDate } from './index'
 
 export default class TransactionCalculator {
 	constructor(transactions, initCapital = 0) {
@@ -61,7 +61,7 @@ export default class TransactionCalculator {
 				const values = Object.values(sums[category])
 				return { category, mean: values.reduce((sum, value) => sum + value, 0) / values.length }
 			})
-			.toSorted((a, b) => b.mean - a.mean)
+			.sort((a, b) => b.mean - a.mean)
 		return sortedMeans.concat({ category: 'Total', mean: sortedMeans.reduce((sum, obj) => sum + obj.mean, 0) })
 	}
 
@@ -94,7 +94,7 @@ export default class TransactionCalculator {
 
 	netWorths(startDate, endDate) {
 		const initCapital = this.initCapitalAt(startDate)
-		return sortedByDate(this.transactions).reduce(
+		return sortByDate(this.transactions).reduce(
 			(arr, transaction) => {
 				const currentDate = dayjs(transaction.date)
 				if (currentDate.isBefore(startDate, 'day') || currentDate.isAfter(endDate, 'day')) return arr

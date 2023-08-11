@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
 
-export function sortedByDate(objects, order = 'asc') {
+export function sortByDate(objects, order = 'asc') {
 	const orderMultiplier = order === 'asc' ? 1 : -1
-	return objects.toSorted((a, b) => (new Date(a.date) - new Date(b.date)) * orderMultiplier)
+	return objects.sort((a, b) => (new Date(a.date) - new Date(b.date)) * orderMultiplier)
 }
 
 export function dateWithTime(date, timeDate) {
