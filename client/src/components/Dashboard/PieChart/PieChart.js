@@ -26,8 +26,6 @@ export default function PieChart({ className, title, type }) {
 	const transactions = useSelector(state => state.transactions.data)
 	const calculator = new TransactionCalculator(transactions)
 	const dataset = calculator.monthlyCategories(type)
-	const sums = calculator.monthlyBalances({ months: 1 })[0] || { income: 0, expense: 0 }
-	const total = sums[type]
 	const chartRef = useRef()
 	const chartSize = useResizeObserver(chartRef)
 	const fetchingTransactions = useSelector(state => state.transactions.fetching)
@@ -81,6 +79,8 @@ export default function PieChart({ className, title, type }) {
 								afterDatasetsDraw(chart, args, options) {
 									const { ctx, chartArea } = chart
 									const { x, y } = chart.getDatasetMeta(0).data[0]
+									const data = chart.data.datasets[0].data
+									const total = data.reduce((acc, curr) => acc + curr, 0)
 									const radius = Math.min(chartArea.width, chartArea.height) / 2
 									const fontSize = Math.max(0.15 * radius, 13)
 									ctx.font = `bold ${fontSize}px Arial`
