@@ -1,14 +1,14 @@
-# Rahasovellus
+# Finanece Tracker
 
-Sivu löytyy [täältä](https://rahasovellus.herokuapp.com/).
+The page can be found [here](https://rahasovellus.herokuapp.com/).
 
-Sivusta ei saa paljon irti ilman kirjautumista. Voit kirjautua käyttäjänimellä demouser ja salasanalla vahvasalasana nähdäksesi sivun esimerkkidatalla varustettuna. Sivu toimii ainakin Chromella ja Firefoxilla, muista selaimista en tiedä.
+You should log in to see the full power of the website. You can log in with username `demouser` and password `vahvasalasana` to see a demo user with example data. The page works at least on Chrome and Firefox.
 
-Sivu on työkalu omien tulojen ja menojen seuraamiseen. Kun tapahtumia lisää tarpeeksi, omasta rahankäytöstään saa yksityiskohtaista dataa kaavioiden ja tunnuslukujen muodossa. Käyttäjä voi lisätä tuloille ja menoille omia kategorioita tai käyttää valmiita.
+The page is an app to follow your income, expenses and capital growth. Once you have submitted enough transactions, there are several charts and statistics to give you insigts about your financial situation. You can also add your own categories for transactions or use the default ones.
 
-## Käytetyt teknologiat ja rakenne
+## Structure and technologies
 
-- frontend: React, Redux, d3 (kaavioiden piirtoon)
+- frontend: React, Redux, d3.js
 - backend: Express, Mongoose, Passport
 
-Kirjautumisjärjestelmä on toteutettu Passport.js:llä. Käyttäjätiedot tallennetaan express-sessioniin ja lähetetään käyttäjälle cookiena. Käyttäjätiedot ja tapahtumat tallennetaan MongoDB:hin.
+The login system is implemented with Passport.js. User data is stored in express-session and sent to the user as a cookie. User data and transactions are stored in MongoDB.
