@@ -1,4 +1,4 @@
-# Finanece Tracker
+# Finance Tracker
 
 The page can be found [here](https://rahasovellus.herokuapp.com/).
 
