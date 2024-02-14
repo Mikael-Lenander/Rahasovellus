@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, lazy } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -7,22 +7,23 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Home from '../Home/Home'
 import Login from '../Login/Login'
 import Register from '../Register/Register'
-import Dashboard from '../Dashboard/Dashboard'
-import Charts from '../Charts/Charts'
-import Profile from '../Profile/Profile'
+// import Dashboard from '../Dashboard/Dashboard'
+// import Charts from '../Charts/Charts'
+// import Profile from '../Profile/Profile'
 import Navbar from '../Shared/Navbar/Navbar'
 import PrivateRoute from '../Routes/PrivateRoute'
 import PublicRoute from '../Routes/PublicRoute'
-// import Footer from '../Footer/Footer'
 import LoadingScreen from '../Shared/LoadingScreen/LoadingScreen'
 import getUser from '../../actions/getUser'
 import getTransactions from '../../actions/getTransactions'
 
+const Dashboard = lazy(() => import('../Dashboard/Dashboard'))
+const Charts = lazy(() => import('../Charts/Charts'))
+const Profile = lazy(() => import('../Profile/Profile'))
+
 function App() {
 	const dispatch = useDispatch()
 	const fetching = useSelector(state => state.user.fetching)
-	const user = useSelector(state => state.user.data)
-	console.log('user', user)
 
 	useEffect(() => {
 		dispatch(getUser())
@@ -49,7 +50,6 @@ function App() {
 							<Route path='*' component={() => '404 PAGE NOT FOUND'} />
 						</Switch>
 					</BrowserRouter>
-					{/* <Footer/> */}
 				</>
 			)}
 		</>

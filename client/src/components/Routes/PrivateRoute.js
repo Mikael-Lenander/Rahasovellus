@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Navbar from '../Shared/Navbar/Navbar'
@@ -15,7 +15,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 						<Navbar
 							links={[{ path: '/dashboard', text: 'Dashboard' }, { path: '/charts', text: 'Charts' }, { path: '/profile', text: 'Profile' }, { logout: true }]}
 						/>
-						<Component {...props} />
+						<Suspense fallback={'Loading'}>
+							<Component {...props} />
+						</Suspense>
 					</>
 				) : (
 					<Redirect to='/login' />
