@@ -14,7 +14,7 @@ const transactionRouters = require('./routes/transactions')
 const userRouters = require('./routes/user')
 
 const app = express()
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5001
 
 mongoose.connect(process.env.DB_URI, {
 	useNewUrlParser: true,
@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(
 	cors({
-		origin: ['https://rahasovellus.herokuapp.com', 'http://localhost:3000', 'http://localhost:5000'],
+		origin: ['https://rahasovellus.herokuapp.com', 'http://localhost:3000', 'http://localhost:5001', 'https://rahasovellus.onrender.com'],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: true
 	})
