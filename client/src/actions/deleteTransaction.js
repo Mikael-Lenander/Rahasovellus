@@ -1,12 +1,9 @@
-import axios from 'axios'
-import { baseUrl } from '../constants/url'
+import { axiosAuth } from '.'
 import { DELETE_TRANSACTION, UPDATE_OLDEST_TRANSACTION_DATE } from '../constants/actionTypes'
 
 const deleteTransaction = id => async dispatch => {
 	try {
-		const { data } = await axios.delete(`${baseUrl}/transaction/delete/${id}`, {
-			withCredentials: true
-		})
+		const { data } = await axiosAuth.delete(`/transaction/delete/${id}`)
 		dispatch({ type: DELETE_TRANSACTION, id: data.transaction })
 		dispatch({
 			type: UPDATE_OLDEST_TRANSACTION_DATE,

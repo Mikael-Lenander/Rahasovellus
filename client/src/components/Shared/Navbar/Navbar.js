@@ -1,12 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import logoutUser from '../../../actions/logoutUser'
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import BNavbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import './Navbar.css'
 
 export default function Navbar({ homeLink, links = [] }) {
+	const user = useSelector(state => state.user.data)
 	const dispatch = useDispatch()
 
 	return (
@@ -36,7 +38,7 @@ export default function Navbar({ homeLink, links = [] }) {
 								className='btn btn-link'
 								style={{ color: 'white' }}
 								onClick={() => {
-									dispatch(logoutUser())
+									dispatch(logoutUser(user.refreshToken))
 								}}
 							>
 								Logout

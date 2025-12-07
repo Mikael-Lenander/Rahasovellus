@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import getLoginMessage from '../../actions/getLoginMessage'
-import getUser from '../../actions/getUser'
 import { CLEAR_REGISTER_MESSAGES, CLEAR_LOGIN_MESSAGE } from '../../constants/actionTypes'
 import Navbar from '../Shared/Navbar/Navbar'
 
@@ -19,10 +18,6 @@ export default function Login() {
 		clearMessages()
 		dispatch(getLoginMessage({ username: username, password: password }))
 	}
-
-	useEffect(() => {
-		dispatch(getUser())
-	}, [loginMessage, dispatch])
 
 	function clearMessages() {
 		dispatch({ type: CLEAR_REGISTER_MESSAGES })

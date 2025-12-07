@@ -1,12 +1,9 @@
-import { baseUrl } from '../constants/url'
 import { ADD_CATEGORY } from '../constants/actionTypes'
-import axios from 'axios'
+import { axiosAuth } from '.'
 
 const addCategory = categoryObj => async dispatch => {
 	try {
-		const { data } = await axios.post(`${baseUrl}/user/category`, categoryObj, {
-			withCredentials: true
-		})
+		const { data } = await axiosAuth.post(`/user/category`, categoryObj)
 		dispatch({ type: ADD_CATEGORY, data: data })
 	} catch (error) {
 		console.log(error)

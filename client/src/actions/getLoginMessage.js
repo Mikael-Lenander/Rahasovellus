@@ -1,12 +1,9 @@
-import axios from 'axios'
-import { baseUrl } from '../constants/url'
+import { axiosPublic } from '.'
 import { FETCH_LOGIN_MESSAGE, LOGGED_IN } from '../constants/actionTypes'
 
 const getLoginMessage = credentials => async dispatch => {
 	try {
-		const { data } = await axios.post(`${baseUrl}/login`, credentials, {
-			withCredentials: true
-		})
+		const { data } = await axiosPublic.post(`/login`, credentials)
 		dispatch({
 			type: FETCH_LOGIN_MESSAGE,
 			data: { message: data.message, success: data.success }
@@ -15,10 +12,10 @@ const getLoginMessage = credentials => async dispatch => {
 			dispatch({ type: LOGGED_IN, data: data.user })
 		}
 	} catch (error) {
-		console.log(error)
+		const errorMessage = error.response?.data?.error || 'Login failed'
 		dispatch({
 			type: FETCH_LOGIN_MESSAGE,
-			data: { message: 'Login failed', success: false }
+			data: { message: errorMessage, success: false }
 		})
 	}
 }

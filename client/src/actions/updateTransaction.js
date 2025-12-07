@@ -1,10 +1,9 @@
-import axios from 'axios'
-import { baseUrl } from '../constants/url'
+import { axiosAuth } from '.'
 import { UPDATE_TRANSACTION, UPDATE_OLDEST_TRANSACTION_DATE } from '../constants/actionTypes'
 
 const updateTransaction = transaction => async dispatch => {
 	try {
-		const { data } = await axios.put(`${baseUrl}/transaction/update/${transaction._id}`, transaction, { withCredentials: true })
+		const { data } = await axiosAuth.put(`/transaction/update/${transaction._id}`, transaction)
 		dispatch({ type: UPDATE_TRANSACTION, transaction: data.transaction })
 		dispatch({
 			type: UPDATE_OLDEST_TRANSACTION_DATE,
