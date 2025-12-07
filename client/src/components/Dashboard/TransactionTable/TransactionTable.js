@@ -9,7 +9,7 @@ export default function TransactionTable() {
 	const latestTransactions = sortByDate(
 		transactions.filter(obj => new Date(obj.date) <= new Date()),
 		'desc'
-	).slice(0, 15)
+	).slice(0, 20)
 
 	const fetching = useSelector(state => state.transactions.fetching)
 
