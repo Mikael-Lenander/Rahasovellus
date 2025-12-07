@@ -1,11 +1,9 @@
-import { baseUrl } from '../constants/url'
 import { FETCH_UPDATE_MESSAGE, UPDATE_INIT_CAPITAL } from '../constants/actionTypes'
-import axios from 'axios'
+import { axiosAuth } from '.'
 
 const updateInitCapital = initCapital => async dispatch => {
 	try {
-		// const {data} = await axios.post(`${baseUrl}/user/initCapital`, {initCapital}, {withCredentials: true})
-		const { data } = await axios.put(`${baseUrl}/user/initCapital`, { initCapital }, { withCredentials: true })
+		const { data } = await axiosAuth.put(`/user/initCapital`, { initCapital })
 		dispatch({
 			type: FETCH_UPDATE_MESSAGE,
 			data: { message: data.message, success: data.success }

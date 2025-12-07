@@ -5,8 +5,8 @@ const dayjs = require('dayjs')
 
 router.post('/new', async (req, res) => {
 	const { userId, type, category, amount, date, comment = '' } = req.body
-	let { _id, oldestTransactionDate } = req.user
-	// {_id: '6097a739dfc47918600eb796', oldestTransactionDate: '5138-11-16T09:46:40.000+00:00'}
+	const user = await User.findById(userId)
+	if (!user) return res.status(404).json({ error: 'User not found' })
 	const newTransaction = new Transaction({
 		userId: userId,
 		type: type,
@@ -17,8 +17,7 @@ router.post('/new', async (req, res) => {
 	})
 	try {
 		const transaction = await newTransaction.save()
-		oldestTransactionDate = await updateOldestTransactionDate(date, oldestTransactionDate, _id)
-		console.log('Transaction added')
+		const oldestTransactionDate = await updateOldestTransactionDate(date, user.oldestTransactionDate, user._id)
 		res.json({ transaction, oldestTransactionDate })
 	} catch (error) {
 		console.log(error)
@@ -28,7 +27,8 @@ router.post('/new', async (req, res) => {
 router.put('/update/:id', async (req, res) => {
 	const id = req.params.id
 	const { category, amount, date, comment } = req.body
-	let { _id, oldestTransactionDate } = req.user
+	const user = await User.findById(req.user._id)
+	if (!user) return res.status(404).json({ error: 'User not found' })
 	try {
 		const updatedTransaction = await Transaction.findByIdAndUpdate(
 			id,
@@ -42,8 +42,7 @@ router.put('/update/:id', async (req, res) => {
 			},
 			{ useFindAndModify: false, new: true }
 		)
-		oldestTransactionDate = await updateOldestTransactionDate(date, oldestTransactionDate, _id)
-		console.log('Transaction updated')
+		const oldestTransactionDate = await updateOldestTransactionDate(date, user.oldestTransactionDate, user._id)
 		res.json({ transaction: updatedTransaction, oldestTransactionDate })
 	} catch (error) {
 		console.log(error)
@@ -60,18 +59,21 @@ router.get('/all', (req, res) => {
 
 router.delete('/delete/:id', async (req, res) => {
 	const id = req.params.id
-	let { oldestTransactionDate, _id: userId } = req.user
+	const user = await User.findById(req.user._id)
+	if (!user) return res.status(404).json({ error: 'User not found' })
 	try {
 		const deletedTransaction = await Transaction.findOneAndDelete({ _id: id })
-		if (dayjs(oldestTransactionDate).isSame(dayjs(deletedTransaction.date))) {
-			const oldestTransaction = await Transaction.find({ userId: userId }).sort({ date: 1 }).limit(1)
+		if (!deletedTransaction) return res.status(404).json({ error: 'Transaction not found' })
+		let oldestTransactionDate = user.oldestTransactionDate
+		if (dayjs(user.oldestTransactionDate).isSame(dayjs(deletedTransaction.date))) {
+			const oldestTransaction = await Transaction.find({ userId: user._id }).sort({ date: 1 }).limit(1)
 			oldestTransactionDate = oldestTransaction[0]?.date || null
-			await User.findByIdAndUpdate(userId, { $set: { oldestTransactionDate: oldestTransactionDate } }, { useFindAndModify: false })
+			await User.findByIdAndUpdate(user._id, { $set: { oldestTransactionDate } }, { useFindAndModify: false })
 		}
 		console.log('Transaction deleted')
 		res.send({
 			transaction: deletedTransaction._id,
-			oldestTransactionDate: oldestTransactionDate
+			oldestTransactionDate
 		})
 	} catch (error) {
 		console.log(error)

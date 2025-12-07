@@ -1,22 +1,18 @@
-if (process.env.NODE_ENV !== 'production') {
-	require('dotenv').config()
-}
+const config = require('./config')
 const express = require('express')
-const session = require('express-session')
 const cors = require('cors')
-const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 const path = require('path')
 const passport = require('passport')
-const passportConfig = require('./passportConfig')
 const authRouters = require('./routes/auth')
 const transactionRouters = require('./routes/transactions')
 const userRouters = require('./routes/user')
+const middleware = require('./middleware')
 
 const app = express()
-const PORT = process.env.PORT || 5001
+const PORT = config.PORT
 
-mongoose.connect(process.env.DB_URI, {
+mongoose.connect(config.DB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
 })
@@ -38,36 +34,12 @@ app.use(
 	})
 )
 
-app.use(
-	session({
-		secret: process.env.SESSION_SECRET,
-		resave: true,
-		saveUninitialized: false,
-		proxy: true,
-		cookie: {
-			secure: process.env.NODE_ENV === 'production' ? true : false,
-			sameSite: 'none',
-			maxAge: 60 * 60 * 24 * 1000
-		}
-	})
-)
-app.use(cookieParser(process.env.SESSION_SECRET))
-app.use(passport.initialize())
-app.use(passport.session())
-passportConfig(passport)
-
-const isAuthenticated = (req, res, next) => {
-	if (!req.isAuthenticated()) return res.status(401).json({ error: 'Not authenticated' })
-	next()
-}
-
-app.use('/api', authRouters(passport))
-app.use('/api/transaction', isAuthenticated, transactionRouters)
-app.use('/api/user', isAuthenticated, userRouters)
+app.use('/api', authRouters)
+app.use('/api/transaction', middleware.authenticateToken, transactionRouters)
+app.use('/api/user', middleware.authenticateToken, userRouters)
 
 app.get('*', (req, res) => {
 	const staticPath = path.join(path.dirname(__dirname), 'build/index.html')
-	console.log('staticPath', staticPath)
 	res.sendFile(staticPath)
 })
 

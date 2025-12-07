@@ -1,10 +1,9 @@
-import axios from 'axios'
-import { baseUrl } from '../constants/url'
+import { axiosPublic } from '.'
 import { FETCH_REGISTER_MESSAGES } from '../constants/actionTypes'
 
 const getRegisterMessages = credentials => async dispatch => {
 	try {
-		const { data } = await axios.post(`${baseUrl}/register`, credentials)
+		const { data } = await axiosPublic.post(`/register`, credentials)
 		dispatch({ type: FETCH_REGISTER_MESSAGES, data: data })
 	} catch (error) {
 		console.log(error)

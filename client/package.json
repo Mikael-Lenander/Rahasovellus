@@ -1,7 +1,7 @@
 {
 	"name": "client",
 	"version": "0.1.0",
-	"homepage": "https://rahasovellus.netlify.app",
+	"homepage": "https://rahasovellus.onrender.com",
 	"private": true,
 	"dependencies": {
 		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
@@ -19,6 +19,7 @@
 		"date-fns": "^2.30.0",
 		"dayjs": "^1.11.9",
 		"jquery": "^3.6.0",
+		"jwt-decode": "^4.0.0",
 		"mathjs": "^9.3.2",
 		"popper.js": "^1.16.1",
 		"react": "^18.2.0",
@@ -30,6 +31,7 @@
 		"react-router-dom": "^5.3.4",
 		"react-scripts": "^5.0.1",
 		"redux": "^4.1.0",
+		"redux-persist": "^6.0.0",
 		"redux-thunk": "^2.3.0",
 		"tippy.js": "^6.3.1",
 		"web-vitals": "^1.1.1"

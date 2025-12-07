@@ -5,6 +5,8 @@ import MontlyTotalBarChart from './ChartComponents/MonthlyTotalBarChart'
 import CategoryBarChart from './ChartComponents/CategoryBarChart'
 import LoadingScreen from '../Shared/LoadingScreen/LoadingScreen'
 import { useForm } from '../../hooks/useForm'
+import { useDispatch } from 'react-redux'
+import getTransactions from '../../actions/getTransactions'
 import { DateField, SelectField, CheckboxGroup } from '../Shared/Form/formFields'
 import TransactionCalculator from '../../utils/TransactionCalculator'
 import useResizeObserver from '../../hooks/useResizeObserver'
@@ -36,6 +38,7 @@ const dateModes = {
 const showTotalCheckbox = [{ name: 'Show total', checked: false }]
 
 export default function Charts() {
+	const dispatch = useDispatch()
 	const transactions = useSelector(state => state.transactions.data)
 	const { oldestTransactionDate, initCapital, categories } = useSelector(state => state.user.data)
 	const chartRef = useRef()
@@ -62,6 +65,10 @@ export default function Charts() {
 			setInput('options', checkboxes[state.chart])
 		}
 	}, [state.chart, categories, setInput, checkboxes])
+
+	useEffect(() => {
+		dispatch(getTransactions())
+	}, [dispatch])
 
 	function intitialCheckboxes(categories) {
 		return categories.map(category => ({ name: category, checked: true }))

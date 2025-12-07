@@ -1,10 +1,9 @@
-import { baseUrl } from '../constants/url'
-import { DELETE_CATEGORY, UPDATE_TRANSACTION_CATEGORIES /* FETCH_TRANSACTIONS */ } from '../constants/actionTypes'
-import axios from 'axios'
+import { DELETE_CATEGORY, UPDATE_TRANSACTION_CATEGORIES } from '../constants/actionTypes'
+import { axiosAuth } from '.'
 
 const deleteCategory = categoryObj => async dispatch => {
 	try {
-		const { data } = await axios.delete(`${baseUrl}/user/category?type=${categoryObj.type}&category=${categoryObj.category}`, { withCredentials: true })
+		const { data } = await axiosAuth.delete(`/user/category?type=${categoryObj.type}&category=${categoryObj.category}`)
 		dispatch({ type: DELETE_CATEGORY, data: data.categories })
 		dispatch({
 			type: UPDATE_TRANSACTION_CATEGORIES,
