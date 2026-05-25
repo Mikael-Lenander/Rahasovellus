@@ -13,7 +13,7 @@ export default function ProfileTransactions() {
 	const { setInput, state } = useForm({
 		categoryType: 'any',
 		category: 'any',
-		minAmount: 0,
+		minAmount: '',
 		maxAmount: '',
 		minDate: '',
 		maxDate: new Date(),
@@ -30,7 +30,7 @@ export default function ProfileTransactions() {
 
 	function search({ id, value } = {}) {
 		const defaults = {
-			minAmount: 0,
+			minAmount: -Infinity,
 			maxAmount: Infinity,
 			minDate: new Date(0),
 			maxDate: new Date(8640000000000000),
@@ -89,7 +89,7 @@ export default function ProfileTransactions() {
 							<label htmlFor='minAmount' className='form-label'>
 								Min amount
 							</label>
-							<Field id='minAmount' type='number' min={0} step='0.01' value={state.minAmount} onChange={onChange} />
+							<Field id='minAmount' type='number' step='0.01' value={state.minAmount} onChange={onChange} />
 						</div>
 						<div className='search-form-item'>
 							<label htmlFor='maxAmount' className='form-label'>

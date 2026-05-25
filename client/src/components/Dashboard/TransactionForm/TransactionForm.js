@@ -64,7 +64,7 @@ export function TransactionFromFields({ state, setInput }) {
 				<SelectField id='category' value={state.category} values={state.categories} onChange={setInput} />
 			</div>
 			<div className='form-width'>
-				<Field id='amount' type='number' placeholder='amount' min='0.01' step='0.01' required value={state.amount} onChange={setInput} />
+				<Field id='amount' type='number' placeholder='amount' min={state.categoryType === 'expense' ? '0.01' : undefined} step='0.01' required value={state.amount} onChange={setInput} />
 			</div>
 			<div className='form-width'>
 				<Field id='comment' type='text' placeholder='comment (optional)' maxLength='40' value={state.comment} onChange={setInput} />
